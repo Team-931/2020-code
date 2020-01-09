@@ -75,12 +75,17 @@ void Robot::AutonomousPeriodic() {
     // Custom Auto goes here
   } else {
     // Default Auto goes here
+    robotDrive.StopMotor();
   }
 }
 
 void Robot::TeleopInit() {}
 
-void Robot::TeleopPeriodic() {}
+void Robot::TeleopPeriodic() {
+  robotDrive.TankDrive(
+    driveStick.GetY(frc::XboxController::kLeftHand), 
+    driveStick.GetY(frc::XboxController::kRightHand));
+}
 
 void Robot::TestPeriodic() {}
 
