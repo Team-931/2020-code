@@ -26,14 +26,26 @@ void Robot::RobotInit() {
  * <p> This runs after the mode specific periodic functions, but before
  * LiveWindow and SmartDashboard integrated updating.
  */
+//# include <string>
+
 void Robot::RobotPeriodic() {
   auto color = colorEye.GetColor();
+  if (std::optional<frc::Color> match; colorEye.GetProximity() >= 1024 &&
+    (match = colorMatcher.MatchColor(color)).has_value()) 
+      {auto colorM = match.value();
+      frc::SmartDashboard::PutString("Found match", 
+        std::string ("RGB ") + 
+        std::to_string (colorM.red) + std::to_string (colorM.green) + std::to_string (colorM.blue));
+      }
+  else frc::SmartDashboard::PutString("Found match", "None");
   frc::SmartDashboard::PutNumber("Red", color.red);
   frc::SmartDashboard::PutNumber("Green", color.green);
   frc::SmartDashboard::PutNumber("Blue", color.blue);
   int prox = colorEye.GetProximity();
   frc::SmartDashboard::PutNumber("Proximity", prox);
   if(driveStick.GetBumperPressed(frc::XboxController::kLeftHand)) {
+    colorMatcher.AddColorMatch(color);
+    savedColors.push_back(color);
     savedReds.push_back(color.red);
     savedGreens.push_back(color.green);
     savedBlues.push_back(color.blue);

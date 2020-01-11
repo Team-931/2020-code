@@ -14,6 +14,7 @@
 # include <frc/SpeedControllerGroup.h>
 # include <frc/drive/DifferentialDrive.h>
 # include <rev/ColorSensorV3.h>
+# include <rev/ColorMatch.h>
 # include <frc/XboxController.h>
 # include <frc/smartdashboard/SendableChooser.h>
 # include "Container.h"
@@ -44,6 +45,8 @@ class Robot : public frc::TimedRobot {
   frc::DifferentialDrive robotDrive{left, right};
   //color sense stuff
   rev::ColorSensorV3 colorEye{frc::I2C::Port::kOnboard};
+  rev::ColorMatch colorMatcher;
+  std::vector <frc::Color> savedColors;
   std::vector <double> savedReds;
   std::vector <double> savedGreens;
   std::vector <double> savedBlues;
