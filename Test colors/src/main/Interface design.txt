@@ -1,0 +1,37 @@
+These are possible software items we could produce. Please consider which might be more or less important, 
+and what might need to be added. Some may not be possible in all designs.
+
+SubSystem::Subroutine(parameters...)
+
+Drive::SetSpeeds(forwardSpeed, rightwardSpeed, twistSpeed, Orientation{Robot, Field})
+Drive::SetPercentPower(forward, rightward, twist, Orientation{Robot, Field})
+
+ResponseCurve{linear, twist}::respond(input)
+ResponseCurve{linear, twist}::adjust(parameter)
+
+Example: drive.SetPercentPower(linear(Joystick.GetY()), linear(Joystick.GetX()), twist(Joystick.GetTwist()), Field);
+
+ShooterSpinner::PushPower(power)
+ShooterSpinner::Push()
+ShooterSpinner::Pull()
+ShooterSpinner::RaisePower(power)
+ShooterSpinner::Raise()
+ShooterSpinner::Lower()
+ShooterSpinner::SetHeight(height)
+ShooterSpinner::SpinSpeed(speed)
+ShooterSpinner::SpinLeft()
+ShooterSpinner::SpinRight()
+ShooterSpinner::ExtrudeSensor()
+ShooterSpinner::RetractSensor()
+ShooterSpinner::ReadSensor() //This could be continual or on demand
+
+Climber::RaisePower(power)
+Climber::SetHeight(height)
+Climber::PullPower(power)
+Climber::Pull()
+Climber::Latch()
+Climber::Release()
+Climber::ShiftRightPower(power)
+Climber::ShiftRight()
+Climber::ShiftLeft()
+Climber::ShiftAutomatic()

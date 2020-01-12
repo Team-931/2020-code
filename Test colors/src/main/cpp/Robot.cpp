@@ -6,6 +6,7 @@
 /*----------------------------------------------------------------------------*/
 
 # include "Robot.h"
+# include "Constants.h"
 
 # include <iostream>
 
@@ -30,9 +31,16 @@ void Robot::RobotInit() {
 
 void Robot::RobotPeriodic() {
   auto color = colorEye.GetColor();
-  if (std::optional<frc::Color> match; colorEye.GetProximity() >= 1024 &&
+  if (std::optional<frc::Color> match; colorEye.GetProximity() >= MinProx &&
     (match = colorMatcher.MatchColor(color)).has_value()) 
       {auto colorM = match.value();
+      int matchIx = -1;
+      for(unsigned ix = 0; ix < savedColors.size(); ++ix) 
+      if (savedColors[ix] == colorM){
+          matchIx = ix;
+          break;
+      }
+      frc::SmartDashboard::PutNumber("Match number", matchIx);
       frc::SmartDashboard::PutString("Found match", 
         std::string ("RGB ") + 
         std::to_string (colorM.red) + std::to_string (colorM.green) + std::to_string (colorM.blue));
@@ -52,7 +60,7 @@ void Robot::RobotPeriodic() {
     frc::SmartDashboard::PutNumberArray("Saved reds", savedReds);
     frc::SmartDashboard::PutNumberArray("Saved greens", savedGreens);
     frc::SmartDashboard::PutNumberArray("Saved blue", savedBlues);
-    frc::SmartDashboard::PutNumber("Saved ct", savedReds.size());
+    frc::SmartDashboard::PutNumber("Saved ct", savedColors.size());
   }
 /*   if(driveStick.GetRawButton(5)) frc::SmartDashboard::PutBoolean("Save btn", true);
     else frc::SmartDashboard::PutBoolean("Save btn", false);

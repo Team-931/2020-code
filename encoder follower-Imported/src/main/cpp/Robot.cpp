@@ -27,7 +27,7 @@ void Robot::RobotPeriodic() {
 }
 
 unsigned stage;
-constexpr double wheelbase = 2 /*feet */;
+constexpr double wheelbase = 21.5/12 /*feet */;
 inline double Robot::AngleEnc() const {
     return (leftEncoder.GetDistance() - rightEncoder.GetDistance()) / wheelbase / pi * 180/*degrees*/;
 }
