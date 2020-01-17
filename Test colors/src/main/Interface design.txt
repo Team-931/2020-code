@@ -1,5 +1,5 @@
 These are possible software items we could produce. Please consider which might be more or less important, 
-and what might need to be added. Some may not be possible in all designs.
+and what might need to be added. Some may not be possible in all designs. Parameters may be negative.
 
 SubSystem::Subroutine(parameters...)
 
