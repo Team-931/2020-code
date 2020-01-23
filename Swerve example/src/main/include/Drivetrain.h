@@ -31,6 +31,9 @@ class Drivetrain {
     return frc::Rotation2d(units::degree_t(-m_gyro.GetAngle()));
   }
 
+// Place PIDControllers on the Shuffleboard PID tab for tuning
+  void SetPIDs();
+
   void Drive(units::meters_per_second_t xSpeed,
              units::meters_per_second_t ySpeed, units::radians_per_second_t rot,
              bool fieldRelative);

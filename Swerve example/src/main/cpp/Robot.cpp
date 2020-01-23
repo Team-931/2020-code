@@ -16,7 +16,9 @@ class Robot : public frc::TimedRobot {
     DriveWithJoystick(false);
     m_swerve.UpdateOdometry();
   }
-
+  void RobotInit() override {
+    m_swerve.SetPIDs();
+  }
   void TeleopPeriodic() override { DriveWithJoystick(true); }
 
  private:

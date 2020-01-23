@@ -7,7 +7,8 @@
 
 #pragma once
 
-#include "AnalogEncoder.h"
+#include "frc/AnalogEncoder.h"
+#include <frc/Encoder.h>
 #include <frc/Talon.h>
 #include <frc/controller/PIDController.h>
 #include <frc/controller/ProfiledPIDController.h>
@@ -19,7 +20,9 @@ template <typename TurnCtrl> class SwerveModule {
   SwerveModule(int driveMotorChannel, int turningMotorChannel, int encChannel);
   frc::SwerveModuleState GetState() const;
   void SetDesiredState(const frc::SwerveModuleState& state);
-
+    frc::ProfiledPIDController<units::radians> & GetTurningPID() {
+        return m_turningPIDController;
+    }
  private:
   static constexpr double kWheelRadius = 0.0508;
   static constexpr int kEncoderResolution = 5;
@@ -33,7 +36,7 @@ template <typename TurnCtrl> class SwerveModule {
   TurnCtrl m_turningMotor;
 
   frc::Encoder m_driveEncoder{0, 1};
-  AnalogEncoder m_turningEncoder;
+  frc::AnalogEncoder m_turningEncoder;
 
   frc2::PIDController m_drivePIDController{1.0, 0, 0};
   frc::ProfiledPIDController<units::radians> m_turningPIDController{
@@ -42,3 +45,6 @@ template <typename TurnCtrl> class SwerveModule {
       0.0,
       {kModuleMaxAngularVelocity, kModuleMaxAngularAcceleration}};
 };
+
+extern template class SwerveModule<WPI_TalonSRX>;
+extern template class SwerveModule<WPI_VictorSPX>;
