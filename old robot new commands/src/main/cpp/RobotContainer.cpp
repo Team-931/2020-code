@@ -7,18 +7,18 @@
 
 #include "RobotContainer.h"
 # include <frc2/command/RunCommand.h>
-//using frc::GenericHID::JoystickHand;
 
 RobotContainer::RobotContainer() : simpleAutoCommand(&driveSystem) {
   // Initialize all of your commands and subsystems here
 
   // Configure the button bindings
   ConfigureButtonBindings();
+  typedef frc::GenericHID JS;
   driveSystem.SetDefaultCommand(frc2::RunCommand(
     [this]{driveSystem.SetXYTwist(
-      driveStick.GetY(frc::GenericHID::kRightHand),
-      driveStick.GetX(frc::GenericHID::kRightHand),
-      driveStick.GetX(frc::GenericHID::kLeftHand));},
+      driveStick.GetY(JS::kRightHand),
+      driveStick.GetX(JS::kRightHand),
+      driveStick.GetX(JS::kLeftHand));},
      &driveSystem));
 }
 
