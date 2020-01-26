@@ -32,7 +32,7 @@ template <typename TurnCtrl> SwerveModule<TurnCtrl>::SwerveModule(int driveMotor
                                                2*units::radian_t(wpi::math::pi));
   
   frc::SmartDashboard::PutData(&m_turningPIDController);
-  m_turningPIDController.SetP((turningMotorChannel >= 40) ? .0625 : 1);           //!! Kludge warning !!
+  m_turningPIDController.SetP((turningMotorChannel >= 40) ? .0625 : .5);           //!! Kludge warning !!
 }
 
 template <typename TurnCtrl> frc::SwerveModuleState SwerveModule<TurnCtrl>::GetState() const {

@@ -14,5 +14,7 @@
     "**/.factorypath": true
   },
   "C_Cpp.default.configurationProvider": "vscode-wpilib",
-  "C_Cpp.intelliSenseEngineFallback": "Enabled"
+  "files.associations": {
+    "math": "cpp"
+  }
 }
