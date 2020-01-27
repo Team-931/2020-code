@@ -7,7 +7,13 @@
 
 #pragma once
 
+#include <frc/encoder.h>
+#include <rev/ColorSensorV3.h>
 #include <frc2/command/SubsystemBase.h>
+#include <CTRE/phoenix.h>
+#include "Constants.h"
+
+  using namespace constants::WOFSpinner;
 
 class WOFSpinner : public frc2::SubsystemBase {
  public:
@@ -19,6 +25,10 @@ class WOFSpinner : public frc2::SubsystemBase {
   void Periodic() override;
 
  private:
+  WPI_TalonSRX Talon{Spinner};
+
+  frc::Encoder Encoder{Encoder1, Encoder2};
+  rev::ColorSensorV3 ColorSensor{frc::I2C::Port::kOnboard};
   // Components (e.g. motor controllers and sensors) should generally be
   // declared private and exposed only through public methods.
 };

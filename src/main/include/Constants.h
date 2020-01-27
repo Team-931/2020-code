@@ -14,7 +14,11 @@ namespace constants {
     namespace shooter {constexpr int motorid=0;
     constexpr int intakeid=4;
     constexpr int hopperbeltid=5;}
-    namespace WOFSpinner {}
+    namespace WOFSpinner {
+        constexpr int Spinner{0},
+         Encoder1{1},
+         Encoder2{2};
+    }
 }
 /**
  * The Constants header provides a convenient place for teams to hold robot-wide
