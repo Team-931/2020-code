@@ -10,6 +10,7 @@
 #include <frc2/command/SubsystemBase.h>
 #include <CTRE/phoenix.h>
 #include <frc/AnalogEncoder.h>
+#include "Constants.h"
 
 class onewheeldrive {
     WPI_TalonSRX drivetrain; 
