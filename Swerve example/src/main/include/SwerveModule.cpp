@@ -7,12 +7,14 @@
 
 #include "SwerveModule.h"
 
+#include <frc/AnalogInput.h>
 #include <frc/geometry/Rotation2d.h>
 #include <wpi/math>
+#include <frc/SmartDashboard/SmartDashboard.h>
 
 template <typename TurnCtrl> SwerveModule<TurnCtrl>::SwerveModule(int driveMotorChannel,
                            int turningMotorChannel, int encChannel)
-    : m_driveMotor(driveMotorChannel), m_turningMotor(turningMotorChannel),  m_turningEncoder(encChannel) {
+    : m_driveMotor(driveMotorChannel), m_turningMotor(turningMotorChannel),  m_turningEncoder(new frc::AnalogInput (encChannel)) {
   // Set the distance per pulse for the drive encoder. We can simply use the
   // distance traveled for one rotation of the wheel divided by the encoder
   // resolution.
@@ -22,13 +24,14 @@ template <typename TurnCtrl> SwerveModule<TurnCtrl>::SwerveModule(int driveMotor
   // Set the distance (in this case, angle) per pulse for the turning encoder.
   // This is the the angle through an entire rotation (2 * wpi::math::pi)
   // divided by the encoder resolution.
-  m_turningEncoder.SetDistancePerPulse(2 * wpi::math::pi / kEncoderResolution);
+  m_turningEncoder.SetDistancePerRotation(2 * wpi::math::pi / kEncoderResolution);
 
-  // Limit the PID Controller's input range between -pi and pi and set the input
+  // Limit the PID Controller's input range between 0 and 2*pi and set the input
   // to be continuous.
   m_turningPIDController.EnableContinuousInput(-units::radian_t(/*wpi::math::pi*/0),
                                                2*units::radian_t(wpi::math::pi));
   
+  frc::SmartDashboard::PutData(&m_turningPIDController);
   m_turningPIDController.SetP((turningMotorChannel >= 40) ? .0625 : .5);           //!! Kludge warning !!
 }
 
@@ -50,3 +53,6 @@ template <typename TurnCtrl> void SwerveModule<TurnCtrl>::SetDesiredState(const 
   m_driveMotor.Set(driveOutput);
   m_turningMotor.Set(turnOutput);
 }
+
+template class SwerveModule<WPI_TalonSRX>;
+template class SwerveModule<WPI_VictorSPX>;

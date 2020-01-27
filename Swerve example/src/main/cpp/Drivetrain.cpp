@@ -6,7 +6,15 @@
 /*----------------------------------------------------------------------------*/
 
 #include "Drivetrain.h"
+# include <frc/shuffleboard/Shuffleboard.h>
 
+void Drivetrain::SetPIDs() {
+  frc::ShuffleboardTab & tab = frc::Shuffleboard::GetTab("PID");
+  tab.Add("Front Left",  m_frontLeft.GetTurningPID());
+  tab.Add("Front Right",  m_frontRight.GetTurningPID());
+  tab.Add("Rear Left",  m_backLeft.GetTurningPID());
+  tab.Add("Rear Right",  m_backRight.GetTurningPID());
+}
 void Drivetrain::Drive(units::meters_per_second_t xSpeed,
                        units::meters_per_second_t ySpeed,
                        units::radians_per_second_t rot, bool fieldRelative) {
