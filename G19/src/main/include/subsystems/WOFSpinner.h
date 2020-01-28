@@ -10,7 +10,6 @@
 #include <frc/encoder.h>
 #include <rev/ColorSensorV3.h>
 #include <frc2/command/SubsystemBase.h>
-#include <frc/Controller/PIDController.h>
 #include <CTRE/phoenix.h>
 #include "Constants.h"
 
@@ -30,8 +29,6 @@ class WOFSpinner : public frc2::SubsystemBase {
 
   frc::Encoder Encoder{Encoder1, Encoder2};
   rev::ColorSensorV3 ColorSensor{frc::I2C::Port::kOnboard};
-  frc2::PIDController pid{1,0,0};
-  units::radians theta;
   // Components (e.g. motor controllers and sensors) should generally be
   // declared private and exposed only through public methods.
 };
