@@ -29,8 +29,7 @@ class drivetrain : public frc2::SubsystemBase {
     
  public:
   drivetrain();
-  ~drivetrain() = default;
-
+  
   /**
    * Will be called periodically whenever the CommandScheduler runs.
    */
