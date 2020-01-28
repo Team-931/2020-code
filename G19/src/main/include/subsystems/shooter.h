@@ -13,13 +13,13 @@
 #include "Constants.h"
 //#include <frc/Encoder.h>
 
-  using namespace constants::shooter;
+ 
 
 class shooter : public frc2::SubsystemBase {
-  rev::CANSparkMax shootermotor {motorid, rev::CANSparkMax::MotorType::kBrushless};
-  rev::CANEncoder shooterencoder {shootermotor};
-  WPI_TalonSRX hopperbelt ={hopperbeltid};
-  WPI_TalonSRX intake ={intakeid};
+  rev::CANSparkMax shootermotor;
+  rev::CANEncoder shooterencoder{shootermotor};
+  WPI_TalonSRX hopperbelt;
+  WPI_TalonSRX intake;
   //frc::Encoder shooterencoder;
 
 

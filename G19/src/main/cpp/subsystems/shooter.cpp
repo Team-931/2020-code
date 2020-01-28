@@ -7,7 +7,12 @@
 
 #include "subsystems/shooter.h"
 
-shooter::shooter() {
+using namespace constants::shooter;
+
+shooter::shooter():shootermotor(motorid, rev::CANSparkMax::MotorType::kBrushless),
+hopperbelt(hopperbeltid),
+intake(intakeid)
+ {
   // Implementation of subsystem constructor goes here.
 }
 

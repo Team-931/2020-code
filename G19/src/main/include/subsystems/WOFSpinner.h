@@ -13,7 +13,7 @@
 #include <CTRE/phoenix.h>
 #include "Constants.h"
 
-  using namespace constants::WOFSpinner;
+
 
 class WOFSpinner : public frc2::SubsystemBase {
  public:
@@ -25,9 +25,9 @@ class WOFSpinner : public frc2::SubsystemBase {
   void Periodic() override;
 
  private:
-  WPI_TalonSRX Talon{Spinner};
+  WPI_TalonSRX Talon;
 
-  frc::Encoder Encoder{Encoder1, Encoder2};
+  frc::Encoder Encoder;
   rev::ColorSensorV3 ColorSensor{frc::I2C::Port::kOnboard};
   // Components (e.g. motor controllers and sensors) should generally be
   // declared private and exposed only through public methods.

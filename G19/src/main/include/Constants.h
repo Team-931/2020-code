@@ -9,7 +9,8 @@
 
 
 namespace constants {
-    namespace climber {}
+    namespace RobotContainer {constexpr int JoystickDriveID=0, JoystickOperateID=1;}
+    namespace climber {constexpr int motorid=1;}
     namespace drivetrain {}
     namespace shooter {constexpr int motorid=0;
     constexpr int intakeid=4;

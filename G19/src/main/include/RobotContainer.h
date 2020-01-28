@@ -11,6 +11,10 @@
 
 #include "commands/ExampleCommand.h"
 #include "subsystems/drivetrain.h"
+#include "subsystems/climber.h"
+#include "subsystems/WOFSpinner.h"
+#include "subsystems/shooter.h"
+#include <frc/Joystick.h>
 
 /**
  * This class is where the bulk of the robot should be declared.  Since
@@ -27,8 +31,13 @@ class RobotContainer {
 
  private:
   // The robot's subsystems and commands are defined here...
-  drivetrain m_subsystem;
+  drivetrain Drive;
+  climber Climb;
+  WOFSpinner Wheel;
+  shooter Gun;
   ExampleCommand m_autonomousCommand;
-
+  frc::Joystick JoystickDrive;
+  frc::Joystick JoystickOperate;
+  
   void ConfigureButtonBindings();
 };
