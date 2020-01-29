@@ -11,6 +11,7 @@
 #include <CTRE/phoenix.h>
 #include <frc/AnalogEncoder.h>
 #include "Constants.h"
+#include <AHRS.h>
 
 class onewheeldrive {
     WPI_TalonSRX drivetrain; 
@@ -36,6 +37,9 @@ class drivetrain : public frc2::SubsystemBase {
   void Periodic() override;
 
  private:
+
+    AHRS navx {::SPI::kMXP};
+
   // Components (e.g. motor controllers and sensors) should generally be
   // declared private and exposed only through public methods.
 };

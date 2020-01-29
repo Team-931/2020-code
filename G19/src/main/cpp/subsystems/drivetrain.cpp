@@ -1,8 +1,14 @@
 #include "subsystems/drivetrain.h"
 #include <frc/AnalogInput.h>
 
-onewheeldrive::onewheeldrive (unsigned int wheel) : drivetrain (0), turn (1), turnmotor (new frc::AnalogInput (0)) {}
+using namespace constants::drivetrain;
+
+onewheeldrive::onewheeldrive (unsigned int wheel) : drivetrain (DriveMotor[wheel]), 
+turn (TurnMotor[wheel]), 
+turnmotor (new frc::AnalogInput (Encoder[wheel])) {}
+
 
 drivetrain::drivetrain () {}
 
 void drivetrain::Periodic() {}
+

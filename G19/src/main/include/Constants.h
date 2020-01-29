@@ -11,7 +11,11 @@
 namespace constants {
     namespace RobotContainer {constexpr int JoystickDriveID=0, JoystickOperateID=1;}
     namespace climber {constexpr int motorid=1;}
-    namespace drivetrain {}
+    namespace drivetrain {
+        constexpr int TurnMotor[]={1,3,5,7},
+        DriveMotor[]={2,4,6,8},
+        Encoder[]={1,2,3,4};
+    }
     namespace shooter {constexpr int motorid=0;
     constexpr int intakeid=4;
     constexpr int hopperbeltid=5;}
