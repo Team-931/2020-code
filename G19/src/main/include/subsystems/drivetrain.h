@@ -15,7 +15,7 @@
 
 class onewheeldrive {
     WPI_TalonSRX drivetrain; 
-    WPI_TalonSRX turn;
+    WPI_TalonSRX turn;//built-in analog encodervreports 1024/rotation, counter-clockwise
     frc::AnalogEncoder turnmotor;
 
 public:
@@ -38,7 +38,7 @@ class drivetrain : public frc2::SubsystemBase {
 
  private:
 
-    AHRS navx {::SPI::kMXP};
+    AHRS navx {::SPI::kMXP};//reports in degrees, clockwise
 
   // Components (e.g. motor controllers and sensors) should generally be
   // declared private and exposed only through public methods.
