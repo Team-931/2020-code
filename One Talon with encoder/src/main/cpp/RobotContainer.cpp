@@ -51,7 +51,11 @@ void RobotContainer::ConfigureButtonBindings() {
     motor.GetPIDConfigs();
   });
   frc2::JoystickButton (&stick, 3);
- */}
+ */
+  frc2::JoystickButton (&stick, 5).WhenHeld(frc2::RunCommand([this](){
+    motor.Set(ControlMode::PercentOutput, stick.GetX(hand));
+  }));
+  }
 
 frc2::Command* RobotContainer::GetAutonomousCommand() {
   // An example command will be run in autonomous
