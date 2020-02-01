@@ -7,7 +7,6 @@
 
 #pragma once
 
-#include <frc/encoder.h>
 #include <rev/ColorSensorV3.h>
 #include <frc2/command/SubsystemBase.h>
 #include <CTRE/phoenix.h>
@@ -27,7 +26,6 @@ class WOFSpinner : public frc2::SubsystemBase {
  private:
   WPI_TalonSRX Talon;
 
-  frc::Encoder Encoder;
   rev::ColorSensorV3 ColorSensor{frc::I2C::Port::kOnboard};
   // Components (e.g. motor controllers and sensors) should generally be
   // declared private and exposed only through public methods.

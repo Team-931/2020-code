@@ -1,11 +1,10 @@
 #include "subsystems/drivetrain.h"
-#include <frc/AnalogInput.h>
 
 using namespace constants::drivetrain;
 
 onewheeldrive::onewheeldrive (unsigned int wheel) : drivetrain (DriveMotor[wheel]), 
-turn (TurnMotor[wheel]), 
-turnmotor (new frc::AnalogInput (Encoder[wheel])) {}
+turn (TurnMotor[wheel]){
+    turn.ConfigSelectedFeedbackSensor(FeedbackDevice::Analog);}
 
 
 drivetrain::drivetrain () {}

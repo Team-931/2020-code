@@ -9,14 +9,12 @@
 
 #include <frc2/command/SubsystemBase.h>
 #include <CTRE/phoenix.h>
-#include <frc/AnalogEncoder.h>
 #include "Constants.h"
 #include <AHRS.h>
 
 class onewheeldrive {
     WPI_TalonSRX drivetrain; 
     WPI_TalonSRX turn;
-    frc::AnalogEncoder turnmotor;
 
 public:
     onewheeldrive (unsigned int wheel);

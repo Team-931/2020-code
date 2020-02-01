@@ -2,6 +2,8 @@
 
   using namespace constants::WOFSpinner;
 
-WOFSpinner::WOFSpinner():Talon(Spinner),Encoder(Encoder1, Encoder2){}
+WOFSpinner::WOFSpinner():Talon(Spinner){
+  Talon.ConfigSelectedFeedbackSensor(FeedbackDevice::PulseWidthEncodedPosition);}
+  
 void WOFSpinner::Periodic(){}
 

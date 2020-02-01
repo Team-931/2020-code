@@ -44,6 +44,7 @@ void Robot::AutonomousInit() {
 }
 
 void Robot::AutonomousPeriodic() {}
+  // Autonomous Code //
 
 void Robot::TeleopInit() {
   // This makes sure that the autonomous stops running when

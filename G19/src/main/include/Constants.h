@@ -13,16 +13,19 @@ namespace constants {
     namespace climber {constexpr int motorid=1;}
     namespace drivetrain {
         constexpr int TurnMotor[]={1,3,5,7},
-        DriveMotor[]={2,4,6,8},
-        Encoder[]={1,2,3,4};
+        DriveMotor[]={2,4,6,8};
     }
     namespace shooter {constexpr int motorid=0;
     constexpr int intakeid=4;
     constexpr int hopperbeltid=5;}
     namespace WOFSpinner {
-        constexpr int Spinner{0},
-         Encoder1{1},
-         Encoder2{2};
+        constexpr int Spinner{0};
+        constexpr int WheelRotation{40960};
+            // Reports WheelOfFortune at 40960 ticks/rotation
+        constexpr int WOFDiamater{2*12+8};
+            // 2' 8"
+        constexpr int SpinnerDiameter{4};
+            // 4"
     }
 }
 /**
