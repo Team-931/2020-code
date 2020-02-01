@@ -8,9 +8,12 @@
 #include "RobotContainer.h"
 # include <frc2/command/RunCommand.h>
 # include <frc2/command/button/JoystickButton.h>
+# include <wpi/math>
+using wpi::math::pi;
+
  ControlMode mode = ControlMode::Position;
 
-constexpr double ticksPerRot = 1024;
+constexpr double ticksPerHalfRot = 1024/2;
 /** maps the desired angle to the closest half-rotation, then sets it
  * @param it : Talon to use
  * @param rot : new angle (* ticksPerRot)
@@ -18,9 +21,9 @@ constexpr double ticksPerRot = 1024;
  * @return whether the half-rotation is on the other side
 */
 bool SetPos(WPI_TalonSRX &it, double rot) {
-  int quot; // will hold 3 bits of rot / (ticksPerRot/2)
+  int quot; // will hold 3 bits of rot / (ticksPerHalfRot)
   double old = it.GetSelectedSensorPosition();
-  rot = remquo(rot, ticksPerRot/2, &quot);
+  rot = old + remquo(rot - old, ticksPerHalfRot, &quot);
   it.Set(mode, rot);
   return quot & 1;
 }
@@ -35,7 +38,7 @@ RobotContainer::RobotContainer() : m_autonomousCommand(&m_subsystem) {
   motor.ConfigMotionCruiseVelocity(512);
   m_subsystem.SetDefaultCommand(frc2::RunCommand([this](){
     double x = stick.GetY(hand), y = stick.GetX(hand);
-    if(x*x+y*y > .09) SetPos(motor, atan2(x,y));
+    if(x*x+y*y > .09) SetPos(motor, atan2(x,y)*ticksPerHalfRot/pi);
     }));
   // Configure the button bindings
   ConfigureButtonBindings();
