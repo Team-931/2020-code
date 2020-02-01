@@ -8,41 +8,17 @@
 #pragma once
 
 #include <frc2/command/SubsystemBase.h>
-#include <CTRE/phoenix.h>
-#include "Constants.h"
-#include <AHRS.h>
 
-class onewheeldrive {
-    WPI_TalonSRX drivetrain; 
-<<<<<<< HEAD
-    WPI_TalonSRX turn;
-=======
-    WPI_TalonSRX turn;//built-in analog encodervreports 1024/rotation, counter-clockwise
-    frc::AnalogEncoder turnmotor;
->>>>>>> bd02d4676d097414eab11e2cde3e45608dc852e8
-
-public:
-    onewheeldrive (unsigned int wheel);
-};
-
-class drivetrain : public frc2::SubsystemBase {
-    onewheeldrive fleft {0};
-    onewheeldrive fright {1};
-    onewheeldrive bleft {2};
-    onewheeldrive bright {3};    
-    
+class ExampleSubsystem : public frc2::SubsystemBase {
  public:
-  drivetrain();
-  
+  ExampleSubsystem();
+
   /**
    * Will be called periodically whenever the CommandScheduler runs.
    */
   void Periodic() override;
 
  private:
-
-    AHRS navx {::SPI::kMXP};//reports in degrees, clockwise
-
   // Components (e.g. motor controllers and sensors) should generally be
   // declared private and exposed only through public methods.
 };
