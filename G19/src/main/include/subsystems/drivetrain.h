@@ -14,12 +14,7 @@
 
 class onewheeldrive {
     WPI_TalonSRX drivetrain; 
-<<<<<<< HEAD
     WPI_TalonSRX turn;
-=======
-    WPI_TalonSRX turn;//built-in analog encodervreports 1024/rotation, counter-clockwise
-    frc::AnalogEncoder turnmotor;
->>>>>>> bd02d4676d097414eab11e2cde3e45608dc852e8
 
 public:
     onewheeldrive (unsigned int wheel);

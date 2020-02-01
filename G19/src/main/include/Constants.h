@@ -26,6 +26,8 @@ namespace constants {
             // 2' 8"
         constexpr int SpinnerDiameter{4};
             // 4"
+        constexpr double ValueP{.25};
+            // Fine tune later
     }
 }
 /**

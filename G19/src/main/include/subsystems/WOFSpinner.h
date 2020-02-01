@@ -16,6 +16,7 @@
 
 class WOFSpinner : public frc2::SubsystemBase {
  public:
+ void rotate (double rotations);//this is for the parameter for the WOF color wheel
   WOFSpinner();
 
   /**
