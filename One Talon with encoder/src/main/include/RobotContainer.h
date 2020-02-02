@@ -11,7 +11,6 @@
 
 #include "commands/ExampleCommand.h"
 #include "subsystems/ExampleSubsystem.h"
-# include <ctre/Phoenix.h>
 # include <frc/XboxController.h>
 
 /**
@@ -29,9 +28,9 @@ class RobotContainer {
 
  private:
   // The robot's subsystems and commands are defined here...
-  WPI_TalonSRX motor{12};
   frc::XboxController stick{0};
-  ExampleSubsystem m_subsystem;
+  ExampleSubsystem wheel {Wheel};
+  ExampleSubsystem spinner {Spinner};
   ExampleCommand m_autonomousCommand;
 
   void ConfigureButtonBindings();

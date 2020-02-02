@@ -28,18 +28,19 @@ bool SetPos(WPI_TalonSRX &it, double rot) {
   return quot & 1;
 }
 
-auto constexpr hand = frc::GenericHID::kRightHand;
+auto constexpr spinSide = frc::GenericHID::kRightHand;
+auto constexpr wheelSide = frc::GenericHID::kLeftHand;
 
-RobotContainer::RobotContainer() : m_autonomousCommand(&m_subsystem) {
+RobotContainer::RobotContainer() : m_autonomousCommand(&wheel) {
   // Initialize all of your commands and subsystems here
-  motor.ConfigSelectedFeedbackSensor(FeedbackDevice::Analog);
-  motor.Config_kP(0, .25);
-  motor.ConfigMotionAcceleration(512);
-  motor.ConfigMotionCruiseVelocity(512);
-  m_subsystem.SetDefaultCommand(frc2::RunCommand([this](){
-    double x = stick.GetY(hand), y = stick.GetX(hand);
-    if(x*x+y*y > .09) SetPos(motor, atan2(x,y)*ticksPerHalfRot/pi);
-    }));
+  wheel.SetDefaultCommand(frc2::RunCommand([this](){
+    double x = stick.GetY(spinSide), y = stick.GetX(spinSide);
+    if(x*x+y*y > .09) wheel.RotateTo( atan2(x,y)/pi, mode);
+  },&wheel));
+  spinner.SetDefaultCommand(frc2::RunCommand([this](){
+    double x = stick.GetX(wheelSide);
+    if(abs(x > .125)) spinner.RotateBy(x, mode);
+  }, &spinner));
   // Configure the button bindings
   ConfigureButtonBindings();
 }
@@ -50,14 +51,16 @@ void RobotContainer::ConfigureButtonBindings() {
     if (mode == ControlMode::Position) mode = ControlMode::MotionMagic; 
     else mode = ControlMode::Position;
   });
-/*   frc2::JoystickButton (&stick, 2) . WhenPressed([this](){
-    motor.GetPIDConfigs();
+  frc2::JoystickButton (&stick, 2) . WhenPressed([this](){
+    spinner.RotateTo(0, mode);
   });
-  frc2::JoystickButton (&stick, 3);
- */
+  frc2::JoystickButton (&stick, 3) . WhenPressed([this](){
+    spinner.RotateBy(.125, mode);
+  });
+
   frc2::JoystickButton (&stick, 5).WhenHeld(frc2::RunCommand([this](){
-    motor.Set(ControlMode::PercentOutput, stick.GetX(hand));
-  }));
+    //motor.Set(ControlMode::PercentOutput, stick.GetX(spinSide));
+  },&wheel));
   }
 
 frc2::Command* RobotContainer::GetAutonomousCommand() {

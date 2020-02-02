@@ -4,7 +4,7 @@
 
 WOFSpinner::WOFSpinner():Talon(Spinner){
   Talon.ConfigSelectedFeedbackSensor(FeedbackDevice::PulseWidthEncodedPosition);
-  Talon.Config_kP(ValueP);}
+  Talon.Config_kP(0, ValueP);}
   
 void WOFSpinner::Periodic(){}
 

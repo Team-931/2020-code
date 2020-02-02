@@ -7,10 +7,24 @@
 
 #include "subsystems/ExampleSubsystem.h"
 
-ExampleSubsystem::ExampleSubsystem() {
+ExampleSubsystem::ExampleSubsystem(SysType t): motor((t == Wheel)? 12: 31),
+          TicksPerRot((t == Wheel)? 1024 : 40960)
+ {
   // Implementation of subsystem constructor goes here.
-}
+  motor.ConfigSelectedFeedbackSensor((t == Wheel)? FeedbackDevice::Analog : FeedbackDevice::PulseWidthEncodedPosition);
+  motor.Config_kP(0, (t == Wheel)? .25 : .25);
+  motor.ConfigMotionAcceleration((t == Wheel)? 512 : 4096);
+  motor.ConfigMotionCruiseVelocity((t == Wheel)? 512 : 4096);
+  }
 
 void ExampleSubsystem::Periodic() {
   // Implementation of subsystem periodic method goes here.
+}
+
+void ExampleSubsystem::RotateTo(double amt,ControlMode mode) {
+  motor.Set(mode, amt*TicksPerRot);
+}
+
+void ExampleSubsystem::RotateBy(double amt,ControlMode mode) {
+  motor.Set(mode, amt*TicksPerRot + motor.GetClosedLoopTarget());
 }

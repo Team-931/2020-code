@@ -8,17 +8,24 @@
 #pragma once
 
 #include <frc2/command/SubsystemBase.h>
+# include <ctre/Phoenix.h>
+
+enum SysType {Wheel, Spinner};
 
 class ExampleSubsystem : public frc2::SubsystemBase {
  public:
-  ExampleSubsystem();
+  ExampleSubsystem(SysType);
 
   /**
    * Will be called periodically whenever the CommandScheduler runs.
    */
   void Periodic() override;
+  void RotateTo(double amt, ControlMode);
+  void RotateBy(double amt, ControlMode);
 
  private:
   // Components (e.g. motor controllers and sensors) should generally be
   // declared private and exposed only through public methods.
+  WPI_TalonSRX motor;
+  int const TicksPerRot;
 };
