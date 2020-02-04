@@ -7,7 +7,7 @@
 
 #include "subsystems/ExampleSubsystem.h"
 
-ExampleSubsystem::ExampleSubsystem(SysType t): motor((t == Wheel)? 12: 31),
+ExampleSubsystem::ExampleSubsystem(SysType t): motor((t == Wheel)? 7: 31),
           TicksPerRot((t == Wheel)? 1024 : 40960)
  {
   // Implementation of subsystem constructor goes here.
