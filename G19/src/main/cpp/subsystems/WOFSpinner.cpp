@@ -18,7 +18,7 @@ void WOFSpinner::rotate(double rotations){
 
 }
 
-void WOFSpinner::ColorSensor(bool CSensor){
+void WOFSpinner::CoSensor(bool CSensor){
   CSwitch=CSensor;
 }
 

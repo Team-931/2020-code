@@ -24,7 +24,7 @@ class WOFSpinner : public frc2::SubsystemBase {
    */
   void Periodic() override;
 
-  void ColorSensor(bool CSensor);//This is so you can turn on and off the colorsensor so you are not using it all match
+  void CoSensor(bool CSensor);//This is so you can turn on and off the colorsensor so you are not using it all match
 
  private:
   WPI_TalonSRX Talon;
