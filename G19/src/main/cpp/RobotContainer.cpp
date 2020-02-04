@@ -24,3 +24,9 @@ frc2::Command* RobotContainer::GetAutonomousCommand() {
   // An example command will be run in autonomous
   return &m_autonomousCommand;
 }
+
+int RobotContainer::SpecificColor(){
+  return 0;//0 means no color yet
+  //on WPI look for Game Data Details for more iformation about getting color
+
+}

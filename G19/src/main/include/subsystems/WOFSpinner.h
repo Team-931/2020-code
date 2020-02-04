@@ -24,8 +24,12 @@ class WOFSpinner : public frc2::SubsystemBase {
    */
   void Periodic() override;
 
+  void ColorSensor(bool CSensor);//This is so you can turn on and off the colorsensor so you are not using it all match
+
  private:
   WPI_TalonSRX Talon;
+
+  bool CSwitch=false;
 
   rev::ColorSensorV3 ColorSensor{frc::I2C::Port::kOnboard};
   // Components (e.g. motor controllers and sensors) should generally be

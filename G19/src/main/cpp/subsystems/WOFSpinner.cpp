@@ -6,7 +6,10 @@ WOFSpinner::WOFSpinner():Talon(Spinner){
   Talon.ConfigSelectedFeedbackSensor(FeedbackDevice::PulseWidthEncodedPosition);
   Talon.Config_kP(0, ValueP);}
   
-void WOFSpinner::Periodic(){}
+void WOFSpinner::Periodic(){
+  if (CSwitch)
+    {/*what is the CSwitch going to read, the button*/}
+}
 
 void WOFSpinner::rotate(double rotations){
   Talon.SetSelectedSensorPosition (0);
@@ -14,3 +17,9 @@ void WOFSpinner::rotate(double rotations){
   Talon.Set (ControlMode::Position, rotations);
 
 }
+
+void WOFSpinner::ColorSensor(bool CSensor){
+  CSwitch=CSensor;
+}
+
+  

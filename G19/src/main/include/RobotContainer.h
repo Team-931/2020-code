@@ -40,4 +40,6 @@ class RobotContainer {
   frc::Joystick JoystickOperate;
   
   void ConfigureButtonBindings();
+
+  int SpecificColor();//This is for getting the specific color form the feild
 };
