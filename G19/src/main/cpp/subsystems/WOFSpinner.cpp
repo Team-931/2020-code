@@ -2,7 +2,10 @@
 
   using namespace constants::WOFSpinner;
 
+extern const frc::Color ColorList[];
+
 WOFSpinner::WOFSpinner():Talon(Spinner){
+  for (int i = 0; i < 4; ++i) Matcher.AddColorMatch (ColorList[i]);
   Talon.ConfigSelectedFeedbackSensor(FeedbackDevice::PulseWidthEncodedPosition);
   Talon.ConfigMotionCruiseVelocity(4096);
   Talon.ConfigMotionAcceleration(4096);
@@ -21,8 +24,6 @@ void WOFSpinner::rotate(double rotations){
 void WOFSpinner::CoSensor(bool CSensor){
   CSwitch=CSensor;
 }
-
-extern const frc::Color ColorList[];
 
 uint32_t WOFSpinner::FindColor() {
 if (CSwitch && ColorSensor.GetProximity() >= SensorInRange)
