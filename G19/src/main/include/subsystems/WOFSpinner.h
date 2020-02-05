@@ -8,6 +8,7 @@
 #pragma once
 
 #include <rev/ColorSensorV3.h>
+#include <rev/ColorMatch.h>
 #include <frc2/command/SubsystemBase.h>
 #include <CTRE/phoenix.h>
 #include "Constants.h"
@@ -26,12 +27,15 @@ class WOFSpinner : public frc2::SubsystemBase {
 
   void CoSensor(bool CSensor);//This is so you can turn on and off the colorsensor so you are not using it all match
 
+  uint32_t FindColor();
  private:
   WPI_TalonSRX Talon;
 
   bool CSwitch=false;
 
   rev::ColorSensorV3 ColorSensor{frc::I2C::Port::kOnboard};
+  rev::ColorMatch Matcher;
+
   // Components (e.g. motor controllers and sensors) should generally be
   // declared private and exposed only through public methods.
 };

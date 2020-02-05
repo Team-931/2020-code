@@ -9,7 +9,10 @@
 
 
 namespace constants {
-    namespace RobotContainer {constexpr int JoystickDriveID=0, JoystickOperateID=1;}
+    namespace RobotContainer {
+        constexpr int JoystickDriveID=0, JoystickOperateID=1;
+        constexpr const char * ColorNames[] = {"None yet", "Red", "Green", "Blue", "Yellow"};
+    }
     namespace climber {constexpr int motorid=1;}
     namespace drivetrain {
         constexpr int TurnMotor[]={1,3,5,7},
@@ -28,6 +31,7 @@ namespace constants {
             // 4"
         constexpr double ValueP{.25};
             // Fine tune later
+        constexpr unsigned SensorInRange = 512;
     }
 }
 /**
