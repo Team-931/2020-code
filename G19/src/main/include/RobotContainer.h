@@ -41,5 +41,9 @@ class RobotContainer {
   
   void ConfigureButtonBindings();
 
-  int SpecificColor();//This is for getting the specific color form the feild
+  uint32_t SpecificColor();//This is for getting the specific color form the feild
+  void CheckScoreColor(); // call SpecificColor() and use the result
+  void RotateForCount(); // turns WOFSpinner 3.5 times
+  bool RotateForColor(); // turns WOFSpinner to the right color
+  uint32_t Color2Score = 0, Color2Find = 0, ColorFound = 0;
 };
