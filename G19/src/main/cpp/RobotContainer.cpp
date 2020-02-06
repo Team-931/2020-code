@@ -10,12 +10,19 @@
 # include <frc/DriverStation.h>
 # include <frc/smartdashboard/SmartDashboard.h>
 # include <cmath>
+#include <frc2/command/RunCommand.h>
 
 using namespace constants::RobotContainer;
 
 RobotContainer::RobotContainer() : m_autonomousCommand(&Drive), JoystickDrive(JoystickDriveID), JoystickOperate(JoystickOperateID) {
   // Initialize all of your commands and subsystems here
-
+    Wheel.SetDefaultCommand(frc2::RunCommand( //This all is temporary for testing
+      [this]{frc::SmartDashboard::PutString("ColorFound", ColorNames[Wheel.FindColor()]);
+      if(JoystickDrive.GetRawButtonPressed(2))
+      Wheel.CoSensor(true);
+      else 
+      Wheel.CoSensor(false);}, &Wheel
+    ));
   // Configure the button bindings
   ConfigureButtonBindings();
 }
