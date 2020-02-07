@@ -18,10 +18,11 @@ RobotContainer::RobotContainer() : m_autonomousCommand(&Drive), JoystickDrive(Jo
   // Initialize all of your commands and subsystems here
     Wheel.SetDefaultCommand(frc2::RunCommand( //This all is temporary for testing
       [this]{frc::SmartDashboard::PutString("ColorFound", ColorNames[Wheel.FindColor()]);
-      if(JoystickDrive.GetRawButtonPressed(2))
+            CheckScoreColor();
+/*       if(JoystickDrive.GetRawButtonPressed(2))
       Wheel.CoSensor(true);
       else 
-      Wheel.CoSensor(false);}, &Wheel
+      Wheel.CoSensor(false); */}, &Wheel
     ));
   // Configure the button bindings
   ConfigureButtonBindings();
@@ -29,7 +30,10 @@ RobotContainer::RobotContainer() : m_autonomousCommand(&Drive), JoystickDrive(Jo
 
 void RobotContainer::ConfigureButtonBindings() {
   // Configure your button bindings here
-  frc2::JoystickButton(&JoystickOperate, 4).WhenPressed([](){});
+  frc2::JoystickButton(&JoystickDrive, 2).WhenPressed([this]{
+    Wheel.CoSensor(true);}).WhenReleased([this]{Wheel.CoSensor(false);});
+  frc2::JoystickButton(&JoystickDrive, 4).WhenPressed([this]{
+    frc::SmartDashboard::PutString("Rotator", RotateForColor() ? "Working" : "Failed");});
 }
 
 frc2::Command* RobotContainer::GetAutonomousCommand() {

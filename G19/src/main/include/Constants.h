@@ -22,7 +22,7 @@ namespace constants {
     constexpr int intakeid=4;
     constexpr int hopperbeltid=5;}
     namespace WOFSpinner {
-        constexpr int Spinner{0};
+        constexpr int Spinner{31};
         constexpr int WheelRotation{40960};
             // Reports WheelOfFortune at 40960 ticks/rotation
         constexpr int WOFDiamater{2*12+8};
