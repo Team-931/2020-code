@@ -11,7 +11,7 @@
 #include <rev/CANSparkMax.h>
 #include <CTRE/phoenix.h>
 #include "Constants.h"
-//#include <frc/Encoder.h>
+
 
  
 
@@ -20,8 +20,9 @@ class shooter : public frc2::SubsystemBase {
   rev::CANEncoder shooterencoder{shootermotor};
   WPI_TalonSRX hopperbelt;
   WPI_TalonSRX intake;
-  //frc::Encoder shooterencoder;
 
+  // NOTE : add cowel encoder
+  //        add motor controller
 
  public:
   shooter();
