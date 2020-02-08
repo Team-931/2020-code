@@ -20,14 +20,20 @@ namespace constants {
         constexpr int JoystickDriveID=0, JoystickOperateID=1;
         constexpr const char * ColorNames[] = {"None yet", "Red", "Green", "Blue", "Yellow"};
     }
-    namespace climber {constexpr int motorid=1;}
+    namespace climber {constexpr int motorid=1;
+    constexpr int ReachUp=2;
+    constexpr int ReachDown =3;
+    }
     namespace drivetrain {
         constexpr int TurnMotor[]={1,3,5,7},
         DriveMotor[]={2,4,6,8};
     }
     namespace shooter {constexpr int motorid=0;
     constexpr int intakeid=4;
-    constexpr int hopperbeltid=5; }
+    constexpr int hopperbeltid=5;
+    constexpr int Gateid=6;
+    constexpr int AngleForward=0;
+    constexpr int AngleBackward=1; }
     namespace WOFSpinner {
         constexpr int Spinner{31};
         constexpr int WheelRotation{40960};

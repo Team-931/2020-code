@@ -6,7 +6,9 @@ using namespace constants::Cowl;
 Cowl::Cowl():CowlLift(LiftID), 
 CowlCounter(CounterID)
 {
-
+    CurrentPosition = CountMin;
+    MotorVelocity = 0;
+    DesiredTicks = 0;
 }
 
     //NOTE: Find out the ticks for the Cowl from Minimum to Maximum
@@ -22,4 +24,7 @@ void Cowl::LiftCowl(int DesiredLocation) {
     else{MotorVelocity = -1; DesiredTicks = -DesiredTicks;}
 }
 
-void Cowl::Periodic() {}
+void Cowl::Periodic() {
+    if(DesiredTicks > CowlCounter.Get()) CowlLift.Set(MotorVelocity);
+    else CowlLift.StopMotor();
+}

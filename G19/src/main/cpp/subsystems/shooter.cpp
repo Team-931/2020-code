@@ -11,7 +11,9 @@ using namespace constants::shooter;
 
 shooter::shooter():shootermotor(motorid, rev::CANSparkMax::MotorType::kBrushless),
 hopperbelt(hopperbeltid),
-intake(intakeid)
+intake(intakeid),
+Gate(Gateid),
+Angle(AngleForward, AngleBackward)
  {
   // Implementation of subsystem constructor goes here.
 }

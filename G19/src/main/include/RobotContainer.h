@@ -14,6 +14,7 @@
 #include "subsystems/climber.h"
 #include "subsystems/WOFSpinner.h"
 #include "subsystems/shooter.h"
+#include "subsystems/Cowl.h"
 #include <frc/Joystick.h>
 
 /**
@@ -35,6 +36,7 @@ class RobotContainer {
   climber Climb;
   WOFSpinner Wheel;
   shooter Gun;
+  Cowl GunRoof;
   ExampleCommand m_autonomousCommand;
   frc::Joystick JoystickDrive;
   frc::Joystick JoystickOperate;

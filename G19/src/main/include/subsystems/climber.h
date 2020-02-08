@@ -10,6 +10,7 @@
 #include <frc2/command/SubsystemBase.h>
 #include <rev/CANSparkMax.h>
 #include "Constants.h"
+#include <frc/DoubleSolenoid.h>
 
 //  
 
@@ -25,6 +26,8 @@ class climber : public frc2::SubsystemBase {
 
   rev::CANSparkMax ClimbMotor;
   rev::CANEncoder ClimbEncoder {ClimbMotor};
+    //Reaches for the bar on the Closet Hanger
+  frc::DoubleSolenoid Reach;
   // Components (e.g. motor controllers and sensors) should generally be
   // declared private and exposed only through public methods.
 };

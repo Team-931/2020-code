@@ -11,7 +11,7 @@
 #include <rev/CANSparkMax.h>
 #include <CTRE/phoenix.h>
 #include "Constants.h"
-
+#include <frc/DoubleSolenoid.h>
 
 class shooter : public frc2::SubsystemBase {
     //  Fires the Power Cells out of shooter to goal 
@@ -22,6 +22,10 @@ class shooter : public frc2::SubsystemBase {
   WPI_TalonSRX hopperbelt;
     //  Picks the Power Cells up off of the ground
   WPI_TalonSRX intake;
+    // Lets the power cells move into the shooter or keepes them out of the shooter
+  WPI_TalonSRX Gate;
+    //  The Input to change angle of the shooter
+  frc::DoubleSolenoid Angle;
 
  public:
   shooter();
