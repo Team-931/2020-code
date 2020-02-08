@@ -13,20 +13,18 @@
 #include "Constants.h"
 
 
- 
-
 class shooter : public frc2::SubsystemBase {
+    //  Fires the Power Cells out of shooter to goal 
   rev::CANSparkMax shootermotor;
+    //  Lets us know the speed the motors are going to firing the Power Cells at the goal
   rev::CANEncoder shooterencoder{shootermotor};
+    //  Passes the Power Cells from Intake to the Shooter to fire
   WPI_TalonSRX hopperbelt;
+    //  Picks the Power Cells up off of the ground
   WPI_TalonSRX intake;
-
-  // NOTE : add cowel encoder
-  //        add motor controller
 
  public:
   shooter();
-
   /**
    * Will be called periodically whenever the CommandScheduler runs.
    */

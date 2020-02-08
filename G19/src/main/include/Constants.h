@@ -9,6 +9,13 @@
 
 
 namespace constants {
+    namespace Cowl {
+    constexpr int LiftID=2;
+    constexpr int CounterID=3;
+    //Place Holders for the CounterID
+    constexpr int CountMin=0;
+    constexpr int CountMax=1000;
+    }
     namespace RobotContainer {
         constexpr int JoystickDriveID=0, JoystickOperateID=1;
         constexpr const char * ColorNames[] = {"None yet", "Red", "Green", "Blue", "Yellow"};
@@ -20,18 +27,19 @@ namespace constants {
     }
     namespace shooter {constexpr int motorid=0;
     constexpr int intakeid=4;
-    constexpr int hopperbeltid=5;}
+    constexpr int hopperbeltid=5; }
     namespace WOFSpinner {
         constexpr int Spinner{31};
         constexpr int WheelRotation{40960};
             // Reports WheelOfFortune at 40960 ticks/rotation
         constexpr int WOFDiamater{2*12+8};
-            // 2' 8"
+            // Wheel Of Fortune Diameter is 2' 8"
         constexpr int SpinnerDiameter{4};
-            // 4"
+            // Wheel Spinner is 4"
         constexpr double ValueP{.25};
             // Fine tune later
         constexpr unsigned SensorInRange = 512;
+            // Maximum ColorSensor Range
     }
 }
 /**
