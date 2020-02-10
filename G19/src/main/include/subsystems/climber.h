@@ -16,6 +16,16 @@
 
 class climber : public frc2::SubsystemBase {
  public:
+      //Pull up onto Coat Hanger
+  void carry();
+      //Raise arm up to Coat Hanger
+  void reach();
+      //Bring out the arm
+  void raise();
+      //Lower Arm
+  void lower();
+      //Stand Still (double check)
+  void still();
   climber();
   /**
    * Will be called periodically whenever the CommandScheduler runs.

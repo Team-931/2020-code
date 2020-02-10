@@ -15,6 +15,7 @@
 class onewheeldrive {
     WPI_TalonSRX drivetrain; 
     WPI_TalonSRX turn;
+    const Coordinate Location;
 
 public:
     onewheeldrive (unsigned int wheel);
@@ -25,8 +26,9 @@ class drivetrain : public frc2::SubsystemBase {
     onewheeldrive fright {1};
     onewheeldrive bleft {2};
     onewheeldrive bright {3};    
-    
- public:
+
+
+    public:
   drivetrain();
   
   /**

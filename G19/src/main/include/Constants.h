@@ -7,7 +7,7 @@
 
 #pragma once
 
-
+struct Coordinate {double rightward; double forward;};//measure these in inches.
 namespace constants {
     namespace Cowl {
     constexpr int LiftID=2;
@@ -25,8 +25,15 @@ namespace constants {
     constexpr int ReachDown =3;
     }
     namespace drivetrain {
+        // front left, front right, back left, back right 
         constexpr int TurnMotor[]={1,3,5,7},
         DriveMotor[]={2,4,6,8};
+        constexpr Coordinate WheelPositions[]={
+            {-11.5, 11.875},
+            {11.5, 11.875},
+            {-11.5, -11.875},
+            {11.5, -11.875},
+        };
     }
     namespace shooter {constexpr int motorid=0;
     constexpr int intakeid=4;
