@@ -22,10 +22,13 @@ class shooter : public frc2::SubsystemBase {
   WPI_TalonSRX hopperbelt;
     //  Picks the Power Cells up off of the ground
   WPI_TalonSRX intake;
-    // Lets the power cells move into the shooter or keepes them out of the shooter
+    // Lets the power cells move into the shooter or keeps them out of the shooter
   WPI_TalonSRX Gate;
     //  The Input to change angle of the shooter
   frc::DoubleSolenoid Angle;
+    //  Checks if the Gate is opened or closed
+  bool GateOpen {false};
+  
 
  public:
   shooter();
@@ -33,6 +36,14 @@ class shooter : public frc2::SubsystemBase {
    * Will be called periodically whenever the CommandScheduler runs.
    */
   void Periodic() override;
+    /* Asks if gate is open or closed */
+  bool GateStatus() {return GateOpen;}
+  void OpenGate() {GateOpen = true;}
+  void CloseGate() {GateOpen = false;}
+  void ShooterRPM(double RPM) {shootermotor.GetPIDController ().SetReference(RPM, rev::kVoltage);}
+  double ReturnRPM();
+
+
 
  private:
   // Components (e.g. motor controllers and sensors) should generally be

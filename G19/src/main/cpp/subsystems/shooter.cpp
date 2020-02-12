@@ -20,4 +20,6 @@ Angle(AngleForward, AngleBackward)
 
 void shooter::Periodic() {
   // Implementation of subsystem periodic method goes here.
+  if(GateOpen) Gate.Set(1);
+  else Gate.Set(-1);
 }

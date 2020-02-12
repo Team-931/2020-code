@@ -26,8 +26,8 @@ namespace constants {
     }
     namespace drivetrain {
         // front left, front right, back left, back right 
-        constexpr int TurnMotor[]={1,3,5,7},
-        DriveMotor[]={2,4,6,8};
+        constexpr int TurnMotor[]={6,5,7,8},
+        DriveMotor[]={9,2,4,1};
         constexpr Coordinate WheelPositions[]={
             {-11.5, 11.875},
             {11.5, 11.875},

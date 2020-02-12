@@ -8,7 +8,22 @@ turn (TurnMotor[wheel]), Location(WheelPositions[wheel]){
     drivetrain.SetNeutralMode(Brake);
     turn.ConfigSelectedFeedbackSensor(FeedbackDevice::Analog);}
 
+    void drivetrain::Move(
+        double rotation,
+        double forward,
+        double rightward
+        ) {fleft.Move (rotation, forward, rightward);
+        fright.Move (rotation, forward, rightward);
+        bleft.Move (rotation, forward, rightward);
+        bright.Move (rotation, forward, rightward);
+        }
+
 drivetrain::drivetrain () {}
 
 void drivetrain::Periodic() {}
 
+void onewheeldrive::Move(
+    double rotation,
+    double forward,
+    double rightward
+) {} /* {Location.forward*rotation,-Location.rightward*rotation;} */ 

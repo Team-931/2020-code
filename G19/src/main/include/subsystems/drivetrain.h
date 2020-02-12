@@ -16,9 +16,16 @@ class onewheeldrive {
     WPI_TalonSRX drivetrain; 
     WPI_TalonSRX turn;
     const Coordinate Location;
+    
 
 public:
     onewheeldrive (unsigned int wheel);
+      // + is forward, - is reversed
+    void Move(
+      double rotation,
+      double forward,
+      double rightward
+    );
 };
 
 class drivetrain : public frc2::SubsystemBase {
@@ -26,10 +33,15 @@ class drivetrain : public frc2::SubsystemBase {
     onewheeldrive fright {1};
     onewheeldrive bleft {2};
     onewheeldrive bright {3};    
-
+    
 
     public:
   drivetrain();
+  // Clockwise is Positive, Counter-Clockwise is Negative
+  void Move(
+    double rotation,
+    double forward,
+    double rightward);
   
   /**
    * Will be called periodically whenever the CommandScheduler runs.
