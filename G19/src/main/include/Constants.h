@@ -14,7 +14,7 @@ namespace constants {
     constexpr int CounterID=0;
     //Place Holders for the CounterID
     constexpr int CountMin=0;
-    constexpr int CountMax=1000;
+    constexpr int CountMax=500;
     }
     namespace RobotContainer {
         constexpr int JoystickDriveID=0, JoystickOperateID=1;
@@ -40,7 +40,10 @@ namespace constants {
     constexpr int hopperbeltid=5;
     constexpr int Gateid=6;
     constexpr int AngleForward=0;
-    constexpr int AngleBackward=1; }
+    constexpr int AngleBackward=1;
+            // These are for the PID Control of the shooter motor speed
+    constexpr double kP=0.0006, kI=.0000001, kD=0, kIz=0,
+     kFF=0.000015, kMaxOutput=1, kMinOutput=-1;}
     namespace WOFSpinner {
         constexpr int Spinner{31};
         constexpr int WheelRotation{40960};

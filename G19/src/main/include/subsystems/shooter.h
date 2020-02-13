@@ -38,10 +38,29 @@ class shooter : public frc2::SubsystemBase {
   void Periodic() override;
     /* Asks if gate is open or closed */
   bool GateStatus() {return GateOpen;}
+      // Spins the Gate toward the Shooter, moving the Power Cells into the Shooter.
   void OpenGate() {GateOpen = true;}
+      // Spins the Gate reverse to keep the Power Cells out of the Shooter
   void CloseGate() {GateOpen = false;}
+      /*  Tells how fast the Shooter should spin
+          How fast it rotates will give the Power Cell its Distance and Spin for better aim */
   void ShooterRPM(double RPM) {shootermotor.GetPIDController ().SetReference(RPM, rev::kVoltage);}
-  double ReturnRPM();
+      // Returns RPM(Rotations Per Minute)
+  double ReturnRPM() {return shooterencoder.GetVelocity();}
+
+                        // NOTE : Implement when used
+      //  Hopperbelt; being able to transfer the Power Cells from Intake to Shooter.
+  void TransferOn();
+      //  Turns off Hopperbelt
+  void TransferOff();
+      //  Intake; picks up the Power Cells
+  void PickUpOn();
+      //  Turns off Intake
+  void PickUpOff();
+      /* Picks up the Intake until next usage */
+  void SolenoidUp();
+      /* Puts down the Intake to pick up Power Cells */
+  void SolenoidDown();
 
 
 

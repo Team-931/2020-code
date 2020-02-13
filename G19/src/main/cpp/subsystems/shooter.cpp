@@ -16,6 +16,14 @@ Gate(Gateid),
 Angle(AngleForward, AngleBackward)
  {
   // Implementation of subsystem constructor goes here.
+  shootermotor.RestoreFactoryDefaults();
+  rev::CANPIDController UniqueName = shootermotor.GetPIDController();
+      UniqueName.SetP(kP);
+      UniqueName.SetI(kI);
+      UniqueName.SetD(kD);
+      UniqueName.SetIZone(kIz);
+      UniqueName.SetFF(kFF);
+      UniqueName.SetOutputRange(kMinOutput, kMaxOutput);
 }
 
 void shooter::Periodic() {
