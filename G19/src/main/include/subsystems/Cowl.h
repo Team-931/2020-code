@@ -27,4 +27,6 @@ class Cowl : public frc2::SubsystemBase {
    */
   void Periodic() override;
 
+  int GetCount() {return CowlCounter.Get();}
+
 };

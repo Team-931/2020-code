@@ -23,6 +23,11 @@ RobotContainer::RobotContainer() : m_autonomousCommand(&Drive), JoystickDrive(Jo
       Wheel.CoSensor(true);
       else 
       Wheel.CoSensor(false); */}, &Wheel
+    ));//test code
+    using constants::Cowl::CountMax, constants::Cowl::CountMin;
+    GunRoof.SetDefaultCommand(frc2::RunCommand(
+      [this]{frc::SmartDashboard::PutNumber("Cowl Counter", GunRoof.GetCount());
+      GunRoof.LiftCowl((CountMin + CountMax - (CountMax - CountMin) * JoystickDrive.GetY())/2);}, &GunRoof
     ));
   // Configure the button bindings
   ConfigureButtonBindings();

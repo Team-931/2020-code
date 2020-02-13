@@ -10,8 +10,8 @@
 struct Coordinate {double rightward; double forward;};//measure these in inches.
 namespace constants {
     namespace Cowl {
-    constexpr int LiftID=2;
-    constexpr int CounterID=3;
+    constexpr int LiftID=11;
+    constexpr int CounterID=0;
     //Place Holders for the CounterID
     constexpr int CountMin=0;
     constexpr int CountMax=1000;
