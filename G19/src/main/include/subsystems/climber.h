@@ -11,6 +11,7 @@
 #include <rev/CANSparkMax.h>
 #include "Constants.h"
 #include <frc/DoubleSolenoid.h>
+#include <CTRE/phoenix.h>
 
 //  
 
@@ -26,6 +27,8 @@ class climber : public frc2::SubsystemBase {
   void lower();
       //Stand Still (double check)
   void still();
+      // Speed of the Climber Arm Sideways
+  void SidewaysSpeed(double Speed);
   climber();
   /**
    * Will be called periodically whenever the CommandScheduler runs.
@@ -34,6 +37,7 @@ class climber : public frc2::SubsystemBase {
 
  private:
 
+  WPI_TalonSRX ClimbMover;
   rev::CANSparkMax ClimbMotor;
   rev::CANEncoder ClimbEncoder {ClimbMotor};
     //Reaches for the bar on the Closet Hanger

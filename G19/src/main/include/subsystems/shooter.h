@@ -25,9 +25,17 @@ class shooter : public frc2::SubsystemBase {
     // Lets the power cells move into the shooter or keeps them out of the shooter
   WPI_TalonSRX Gate;
     //  The Input to change angle of the shooter
-  frc::DoubleSolenoid Angle;
+  frc::DoubleSolenoid RightSolenoid;
+    //  The Input to change angle of the shooter
+  frc::DoubleSolenoid LeftSolenoid;
     //  Checks if the Gate is opened or closed
   bool GateOpen {false};
+    //  Sets starting speed of Intake
+    //  Can be changed later in the game
+  double PickupSpeed=0;
+    //  Sets starting speed of Hopperbelt
+    //  Can be changed later in the game
+  double TransferSpeed=0;
   
 
  public:
@@ -48,13 +56,16 @@ class shooter : public frc2::SubsystemBase {
       // Returns RPM(Rotations Per Minute)
   double ReturnRPM() {return shooterencoder.GetVelocity();}
 
-                        // NOTE : Implement when used
       //  Hopperbelt; being able to transfer the Power Cells from Intake to Shooter.
-  void TransferOn();
+  void TransferForwards();
       //  Turns off Hopperbelt
   void TransferOff();
-      //  Intake; picks up the Power Cells
-  void PickUpOn();
+      //  Hopperbelt; Gives the Power Cells back to the Intake
+  void TransferBackwards();
+      //  Intake; Forwards; picks up the Power Cells
+  void PickUpForwards();
+      //  Intake; Backwards; picks up the Power Cells
+  void PickUpBackwards();
       //  Turns off Intake
   void PickUpOff();
       /* Picks up the Intake until next usage */

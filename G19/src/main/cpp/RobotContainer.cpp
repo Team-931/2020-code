@@ -29,6 +29,9 @@ RobotContainer::RobotContainer() : m_autonomousCommand(&Drive), JoystickDrive(Jo
 
 void RobotContainer::ConfigureButtonBindings() {
   // Configure your button bindings here
+  frc2::JoystickButton(&JoystickOperate, 2).WhenPressed([this]{
+    Gun.SolenoidUp();});
+  frc2::JoystickButton(&JoystickOperate, 1).WhenPressed([this]{Gun.SolenoidDown();});
   frc2::JoystickButton(&JoystickDrive, 2).WhenPressed([this]{
     Wheel.CoSensor(true);}).WhenReleased([this]{Wheel.CoSensor(false);});
   frc2::JoystickButton(&JoystickDrive, 4).WhenPressed([this]{

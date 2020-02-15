@@ -22,8 +22,8 @@ namespace constants {
     }
     namespace climber {constexpr int motorid=21;
     constexpr int climbmoverid=10;
-    constexpr int ReachUp=2;
-    constexpr int ReachDown =3;
+    constexpr int ReachUp=7;
+    constexpr int ReachDown =0;
     }
     namespace drivetrain {
         // front left, front right, back left, back right 
@@ -40,8 +40,10 @@ namespace constants {
     constexpr int intakeid=3;
     constexpr int hopperbeltid=31;
     constexpr int Gateid=12;
-    constexpr int AngleForward=0;
-    constexpr int AngleBackward=1;
+    constexpr int AngleForward=5;
+    constexpr int AngleBackward=2;
+    constexpr int SolenoidForward=6;
+    constexpr int SolenoidBackward=1;
             // These are for the PID Control of the shooter motor speed
     constexpr double kP=0.0006, kI=.0000001, kD=0, kIz=0,
      kFF=0.000015, kMaxOutput=1, kMinOutput=-1;}

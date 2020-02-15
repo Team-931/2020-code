@@ -13,7 +13,8 @@ shooter::shooter():shootermotor(motorid, rev::CANSparkMax::MotorType::kBrushless
 hopperbelt(hopperbeltid),
 intake(intakeid),
 Gate(Gateid),
-Angle(AngleForward, AngleBackward)
+RightSolenoid(AngleForward, AngleBackward),
+LeftSolenoid(SolenoidForward, SolenoidBackward)
  {
   // Implementation of subsystem constructor goes here.
   shootermotor.RestoreFactoryDefaults();
@@ -24,10 +25,24 @@ Angle(AngleForward, AngleBackward)
       UniqueName.SetIZone(kIz);
       UniqueName.SetFF(kFF);
       UniqueName.SetOutputRange(kMinOutput, kMaxOutput);
+      SolenoidUp();
 }
 
 void shooter::Periodic() {
   // Implementation of subsystem periodic method goes here.
   if(GateOpen) Gate.Set(1);
   else Gate.Set(-1);
+
+  intake.Set(PickupSpeed);
+  hopperbelt.Set(TransferSpeed);
 }
+// Implements
+
+  void shooter::TransferForwards() {TransferSpeed = 1;}
+  void shooter::TransferOff() {TransferSpeed = 0;}
+  void shooter::TransferBackwards() {TransferSpeed = -1;}
+  void shooter::PickUpForwards() {PickupSpeed = 1;}
+  void shooter::PickUpBackwards() {PickupSpeed = -1;}
+  void shooter::PickUpOff() {PickupSpeed = 0;}
+  void shooter::SolenoidUp() {LeftSolenoid.Set(frc::DoubleSolenoid::kForward); RightSolenoid.Set(frc::DoubleSolenoid::kForward);}
+  void shooter::SolenoidDown() {LeftSolenoid.Set(frc::DoubleSolenoid::kReverse); RightSolenoid.Set(frc::DoubleSolenoid::kReverse);}

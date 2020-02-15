@@ -42,7 +42,13 @@ class drivetrain : public frc2::SubsystemBase {
     double rotation,
     double forward,
     double rightward);
-  
+      //  Rotation will be controlled in a seperate way
+  void Move(
+    double rightward,
+    double forward);
+      // Takes the field, then navigates based on it
+  void SetAngleToField(
+    double rotation);
   /**
    * Will be called periodically whenever the CommandScheduler runs.
    */
