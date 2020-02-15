@@ -23,13 +23,7 @@ RobotContainer::RobotContainer() : m_autonomousCommand(&Drive), JoystickDrive(Jo
       Wheel.CoSensor(true);
       else 
       Wheel.CoSensor(false); */}, &Wheel
-    ));//test code
-    using constants::Cowl::CountMax, constants::Cowl::CountMin;
-    GunRoof.SetDefaultCommand(frc2::RunCommand(
-      [this]{frc::SmartDashboard::PutNumber("Cowl Counter", GunRoof.GetCount());
-      GunRoof.LiftCowl((CountMin + CountMax - (CountMax - CountMin) * JoystickDrive.GetY())/2);}, &GunRoof
-    ));
-  // Configure the button bindings
+    ));  // Configure the button bindings
   ConfigureButtonBindings();
 }
 
@@ -39,6 +33,12 @@ void RobotContainer::ConfigureButtonBindings() {
     Wheel.CoSensor(true);}).WhenReleased([this]{Wheel.CoSensor(false);});
   frc2::JoystickButton(&JoystickDrive, 4).WhenPressed([this]{
     frc::SmartDashboard::PutString("Rotator", RotateForColor() ? "Working" : "Failed");});
+//test code
+    using constants::Cowl::CountMax, constants::Cowl::CountMin;
+  frc2::JoystickButton(&JoystickDrive, 9).WhenReleased(
+      [this]{frc::SmartDashboard::PutNumber("Cowl Counter", GunRoof.GetCount());
+      GunRoof.LiftCowl((CountMin + CountMax - (CountMax - CountMin) * JoystickDrive.GetY())/2);}/*, &GunRoof*/
+    );
 }
 
 frc2::Command* RobotContainer::GetAutonomousCommand() {

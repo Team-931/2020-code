@@ -14,13 +14,14 @@ namespace constants {
     constexpr int CounterID=0;
     //Place Holders for the CounterID
     constexpr int CountMin=0;
-    constexpr int CountMax=500;
+    constexpr int CountMax=50;
     }
     namespace RobotContainer {
         constexpr int JoystickDriveID=0, JoystickOperateID=1;
         constexpr const char * ColorNames[] = {"None yet", "Red", "Green", "Blue", "Yellow"};
     }
-    namespace climber {constexpr int motorid=1;
+    namespace climber {constexpr int motorid=21;
+    constexpr int climbmoverid=10;
     constexpr int ReachUp=2;
     constexpr int ReachDown =3;
     }
@@ -35,10 +36,10 @@ namespace constants {
             {11.5, -11.875},
         };
     }
-    namespace shooter {constexpr int motorid=0;
-    constexpr int intakeid=4;
-    constexpr int hopperbeltid=5;
-    constexpr int Gateid=6;
+    namespace shooter {constexpr int motorid=20;
+    constexpr int intakeid=3;
+    constexpr int hopperbeltid=31;
+    constexpr int Gateid=12;
     constexpr int AngleForward=0;
     constexpr int AngleBackward=1;
             // These are for the PID Control of the shooter motor speed
