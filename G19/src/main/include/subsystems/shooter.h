@@ -52,10 +52,10 @@ class shooter : public frc2::SubsystemBase {
   void CloseGate() {GateOpen = false;}
       /*  Tells how fast the Shooter should spin
           How fast it rotates will give the Power Cell its Distance and Spin for better aim */
-  void ShooterRPM(double RPM) {shootermotor.GetPIDController ().SetReference(RPM, rev::kVoltage);}
+  void ShooterRPM(double RPM) {shootermotor.GetPIDController ().SetReference(RPM, rev::kVelocity);}
       // Returns RPM(Rotations Per Minute)
   double ReturnRPM() {return shooterencoder.GetVelocity();}
-
+ 
       //  Hopperbelt; being able to transfer the Power Cells from Intake to Shooter.
   void TransferForwards();
       //  Turns off Hopperbelt

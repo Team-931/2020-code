@@ -14,7 +14,7 @@ namespace constants {
     constexpr int CounterID=0;
     //Place Holders for the CounterID
     constexpr int CountMin=0;
-    constexpr int CountMax=50;
+    constexpr int CountMax=100;
     }
     namespace RobotContainer {
         constexpr int JoystickDriveID=0, JoystickOperateID=1;

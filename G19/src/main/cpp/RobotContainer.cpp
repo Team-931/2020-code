@@ -23,7 +23,12 @@ RobotContainer::RobotContainer() : m_autonomousCommand(&Drive), JoystickDrive(Jo
       Wheel.CoSensor(true);
       else 
       Wheel.CoSensor(false); */}, &Wheel
-    ));  // Configure the button bindings
+    ));
+    Gun.SetDefaultCommand(frc2::RunCommand(
+      [this] {Gun.ShooterRPM(-3500/4*(int)(4*JoystickOperate.GetRawAxis(5)));},
+      &Gun
+    ));
+      // Configure the button bindings
   ConfigureButtonBindings();
 }
 
@@ -40,7 +45,9 @@ void RobotContainer::ConfigureButtonBindings() {
     using constants::Cowl::CountMax, constants::Cowl::CountMin;
   frc2::JoystickButton(&JoystickDrive, 9).WhenReleased(
       [this]{frc::SmartDashboard::PutNumber("Cowl Counter", GunRoof.GetCount());
-      GunRoof.LiftCowl((CountMin + CountMax - (CountMax - CountMin) * JoystickDrive.GetY())/2);}/*, &GunRoof*/
+      int where = (CountMin + CountMax - (CountMax - CountMin) * JoystickDrive.GetY())/2;
+      frc::SmartDashboard::PutNumber("Cowl Goal", where);
+      GunRoof.LiftCowl(where);}/*, &GunRoof*/
     );
 }
 
