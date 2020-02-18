@@ -6,7 +6,9 @@ onewheeldrive::onewheeldrive (unsigned int wheel) : drivetrain (DriveMotor[wheel
 turn (TurnMotor[wheel]), Location(WheelPositions[wheel]){
     turn.SetNeutralMode(Brake);//talk to the driver about what they want this to be [coast/brake]
     drivetrain.SetNeutralMode(Brake);
-    turn.ConfigSelectedFeedbackSensor(FeedbackDevice::Analog);}
+    turn.ConfigSelectedFeedbackSensor(FeedbackDevice::Analog);
+    turn.ConfigFeedbackNotContinuous(false);
+    }
 
     void drivetrain::Move(
         double rotation,
@@ -26,4 +28,7 @@ void onewheeldrive::Move(
     double rotation,
     double forward,
     double rightward
-) {} /* {Location.forward*rotation,-Location.rightward*rotation;} */ 
+) {
+    rightward += Location.forward*rotation, forward += -Location.rightward*rotation;
+
+} 
