@@ -86,3 +86,11 @@ bool RobotContainer::RotateForColor() {
   Wheel.rotate(remainder(Color2Find - found, 4) / 8);
   return true;
 }
+
+void RobotContainer::Hopperclimber(int position){
+if (position==0){
+  Climb.lower();
+  Gun.SolenoidDown();
+}
+
+}

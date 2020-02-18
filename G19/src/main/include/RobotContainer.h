@@ -43,6 +43,8 @@ class RobotContainer {
   
   void ConfigureButtonBindings();
 
+  void Hopperclimber(int position); 
+
   uint32_t SpecificColor();//This is for getting the specific color form the feild
   void CheckScoreColor(); // call SpecificColor() and use the result
   void RotateForCount(); // turns WOFSpinner 3.5 times
