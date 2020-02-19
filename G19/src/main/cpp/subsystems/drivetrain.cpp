@@ -9,6 +9,8 @@ turn (TurnMotor[wheel]), Location(WheelPositions[wheel]){
     turn.ConfigSelectedFeedbackSensor(FeedbackDevice::Analog);
     turn.SetSensorPhase(true);
     turn.Config_kP(0,1);}
+    turn.ConfigFeedbackNotContinuous(false);
+    }
 
     void drivetrain::Move(
         double rotation,
@@ -28,4 +30,7 @@ void onewheeldrive::Move(
     double rotation,
     double forward,
     double rightward
-) {} /* {Location.forward*rotation,-Location.rightward*rotation;} */ 
+) {
+    rightward += Location.forward*rotation, forward += -Location.rightward*rotation;
+
+} 
