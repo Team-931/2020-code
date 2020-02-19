@@ -13,6 +13,9 @@
 #include <frc2/command/RunCommand.h>
 
 using namespace constants::RobotContainer;
+const int BothUp{0};
+const int BothDown{1};
+const int HDownCUp{2};
 
 RobotContainer::RobotContainer() : m_autonomousCommand(&Drive), JoystickDrive(JoystickDriveID), JoystickOperate(JoystickOperateID) {
   // Initialize all of your commands and subsystems here
@@ -90,6 +93,16 @@ bool RobotContainer::RotateForColor() {
 void RobotContainer::Hopperclimber(int position){
 if (position==0){
   Climb.lower();
+  Gun.SolenoidDown();
+}
+else
+if (position==1){
+  Climb.raise();
+  Gun.SolenoidUp();
+}
+else 
+if (position==2){
+  Climb.raise();
   Gun.SolenoidDown();
 }
 
