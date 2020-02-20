@@ -7,11 +7,12 @@ using namespace constants::drivetrain;
 
 onewheeldrive::onewheeldrive (unsigned int wheel) : drivetrain (DriveMotor[wheel]), 
 turn (TurnMotor[wheel]), Location(WheelPositions[wheel]){
+    turn.ConfigFactoryDefault();
     turn.SetNeutralMode(Brake);//talk to the driver about what they want this to be [coast/brake]
     drivetrain.SetNeutralMode(Brake);
     turn.ConfigSelectedFeedbackSensor(FeedbackDevice::Analog);
     turn.SetSensorPhase(true);
-    turn.Config_kP(0,1);
+    turn.Config_kP(0,8);
     turn.ConfigFeedbackNotContinuous(false);
     }
 
@@ -41,5 +42,5 @@ void onewheeldrive::Move(
     if (n & 1)
         spd = -spd;
     drivetrain. Set (spd);
-    turn.Set(halfangle);
+    turn.Set(ControlMode::MotionMagic, halfangle);
 } 
