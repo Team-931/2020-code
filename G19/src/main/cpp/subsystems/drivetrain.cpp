@@ -37,10 +37,12 @@ void onewheeldrive::Move(
 ) {
     rightward += Location.forward*rotation, forward += -Location.rightward*rotation;
     int n;//for quotient bits
-    double angle = atan2(forward, rightward), halfangle = remquo(angle, pi, &n),
-           spd = sqrt(rightward * rightward + forward * forward);
+    double current = turn.GetSelectedSensorPosition(), //our wheel alignment in units of 1024/rotation
+           angle = 512 * atan2(forward, rightward) / pi - current, //change in alignment
+           halfangle = remquo(angle, 512, &n) + current, // new alignment is changed be as close as poss. to old
+           spd = sqrt(rightward * rightward + forward * forward); // magnitude of drive
     if (n & 1)
-        spd = -spd;
+        spd = -spd; // backwards if wheel is reversed
     drivetrain. Set (spd);
     turn.Set(ControlMode::MotionMagic, halfangle);
 } 
