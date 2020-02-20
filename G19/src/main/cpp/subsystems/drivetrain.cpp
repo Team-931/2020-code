@@ -1,5 +1,8 @@
 #include "subsystems/drivetrain.h"
 
+# include <wpi/math>
+using wpi::math::pi;
+
 using namespace constants::drivetrain;
 
 onewheeldrive::onewheeldrive (unsigned int wheel) : drivetrain (DriveMotor[wheel]), 
@@ -8,7 +11,7 @@ turn (TurnMotor[wheel]), Location(WheelPositions[wheel]){
     drivetrain.SetNeutralMode(Brake);
     turn.ConfigSelectedFeedbackSensor(FeedbackDevice::Analog);
     turn.SetSensorPhase(true);
-    turn.Config_kP(0,1);}
+    turn.Config_kP(0,1);
     turn.ConfigFeedbackNotContinuous(false);
     }
 
@@ -32,5 +35,11 @@ void onewheeldrive::Move(
     double rightward
 ) {
     rightward += Location.forward*rotation, forward += -Location.rightward*rotation;
-
+    int n;//for quotient bits
+    double angle = atan2(forward, rightward), halfangle = remquo(angle, pi, &n),
+           spd = sqrt(rightward * rightward + forward * forward);
+    if (n & 1)
+        spd = -spd;
+    drivetrain. Set (spd);
+    turn.Set(halfangle);
 } 
