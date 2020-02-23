@@ -13,6 +13,8 @@ turn (TurnMotor[wheel]), Location(WheelPositions[wheel]){
     turn.ConfigSelectedFeedbackSensor(FeedbackDevice::Analog);
     turn.SetSensorPhase(true);
     turn.Config_kP(0,8);
+    turn.ConfigMotionAcceleration(512);
+    turn.ConfigMotionCruiseVelocity(512);
     turn.ConfigFeedbackNotContinuous(false);
     }
 
