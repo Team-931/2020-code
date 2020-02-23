@@ -30,7 +30,12 @@ RobotContainer::RobotContainer() : m_autonomousCommand(&Drive), JoystickDrive(Jo
       [this] {Gun.ShooterRPM(-3500/4*(int)(4*JoystickOperate.GetRawAxis(5)));},
       &Gun
     ));
-    Drive.SetDefaultCommand(frc2::RunCommand([this] {Drive.Move(0, -JoystickDrive.GetY(), JoystickDrive.GetX());}, &Drive));
+    Drive.SetDefaultCommand(frc2::RunCommand([this] {
+      double ready=-JoystickDrive.GetY(), readx=JoystickDrive.GetX(), readz=JoystickDrive.GetZ();
+      double magnitudevector=sqrt(ready*ready+readx*readx);
+      ready*=magnitudevector, readx*=magnitudevector, readz*=abs(readz)/16;//divid by 16 will change to a name constant
+      Drive.Move(readz, ready, readx);
+      }, &Drive));
       // Configure the button bindings
   ConfigureButtonBindings();
 }
