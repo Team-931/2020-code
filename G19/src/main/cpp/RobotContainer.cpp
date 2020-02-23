@@ -9,7 +9,6 @@
 # include <frc2/command/button/JoystickButton.h>
 # include <frc/DriverStation.h>
 # include <frc/smartdashboard/SmartDashboard.h>
-# include <cmath>
 #include <frc2/command/RunCommand.h>
 
 using namespace constants::RobotContainer;
@@ -31,6 +30,7 @@ RobotContainer::RobotContainer() : m_autonomousCommand(&Drive), JoystickDrive(Jo
       [this] {Gun.ShooterRPM(-3500/4*(int)(4*JoystickOperate.GetRawAxis(5)));},
       &Gun
     ));
+    Drive.SetDefaultCommand(frc2::RunCommand([this] {Drive.Move(0, -JoystickDrive.GetY(), JoystickDrive.GetX());}, &Drive));
       // Configure the button bindings
   ConfigureButtonBindings();
 }
