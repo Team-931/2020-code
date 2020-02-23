@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <frc2/command/SubsystemBase.h>
+#include <frc2/command/PIDSubsystem.h>
 #include <CTRE/phoenix.h>
 #include "Constants.h"
 #include <AHRS.h>
@@ -16,19 +16,25 @@ class onewheeldrive {
     WPI_TalonSRX drivetrain; 
     WPI_TalonSRX turn;
     const Coordinate Location;
-    
+    double speed;
 
 public:
     onewheeldrive (unsigned int wheel);
       // + is forward, - is reversed
-    void Move(
+    double Move(      //Returns the absolute value of the speed
       double rotation,
       double forward,
       double rightward
     );
+    void dividspeed(double divider){
+      speed/=divider;
+    }
+    void setspd(){
+      drivetrain.Set(speed);
+    }
 };
 
-class drivetrain : public frc2::SubsystemBase {
+class drivetrain : public frc2::PIDSubsystem {
     onewheeldrive fleft {0};
     onewheeldrive fright {1};
     onewheeldrive bleft {2};
@@ -37,12 +43,12 @@ class drivetrain : public frc2::SubsystemBase {
 
     public:
   drivetrain();
-  // Clockwise is Positive, Counter-Clockwise is Negative
+  // Clockwise is Positive, Counter-Clockwise is Negative // does not take field orientation
   void Move(
     double rotation,
     double forward,
     double rightward);
-      //  Rotation will be controlled in a seperate way
+      //  Rotation will be controlled in a seperate way //This does take field orientation
   void Move(
     double rightward,
     double forward);
@@ -52,12 +58,18 @@ class drivetrain : public frc2::SubsystemBase {
   /**
    * Will be called periodically whenever the CommandScheduler runs.
    */
-  void Periodic() override;
+  //void Periodic() override;
 
  private:
 
     AHRS navx {::SPI::kMXP};//reports in degrees, clockwise
 
+    double xaxis=0;
+    double yaxis=0;
+
   // Components (e.g. motor controllers and sensors) should generally be
   // declared private and exposed only through public methods.
-};
+  protected:
+  double GetMeasurement() override;
+  void UseOutput(double output, double setpoint) override;
+ };

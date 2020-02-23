@@ -17,22 +17,59 @@ turn (TurnMotor[wheel]), Location(WheelPositions[wheel]){
     turn.ConfigMotionCruiseVelocity(512);
     turn.ConfigFeedbackNotContinuous(false);
     }
-
+    double bigger(double x,double y){
+        if(x>y)
+            return x;
+            return y;}
     void drivetrain::Move(
         double rotation,
         double forward,
         double rightward
-        ) {fleft.Move (rotation, forward, rightward);
-        fright.Move (rotation, forward, rightward);
-        bleft.Move (rotation, forward, rightward);
-        bright.Move (rotation, forward, rightward);
+        ) {double divisor=1;
+        divisor=bigger (fleft.Move (rotation, forward, rightward), divisor);
+        divisor=bigger(fright.Move (rotation, forward, rightward), divisor);
+        divisor=bigger (bleft.Move (rotation, forward, rightward), divisor);
+        divisor=bigger(bright.Move (rotation, forward, rightward), divisor);
+        if (divisor>1){
+            fleft.dividspeed(divisor);
+            fright.dividspeed(divisor);
+            bleft.dividspeed(divisor);
+            bright.dividspeed(divisor);
+        }
+        fleft.setspd();
+        fright.setspd();
+        bleft.setspd();
+        bright.setspd();
         }
 
-drivetrain::drivetrain () {}
+drivetrain::drivetrain () :frc2::PIDSubsystem(frc2::PIDController(1,0,0))/*these are for PID*/{ 
+    GetController().EnableContinuousInput(-pi,pi);
+    Enable();
+    }
 
-void drivetrain::Periodic() {}
+//void drivetrain::Periodic() {}
+double drivetrain::GetMeasurement() {
+    return navx.GetYaw()*pi/180;
+}
 
-void onewheeldrive::Move(
+
+void drivetrain::UseOutput(double output, double setpoint) {
+    double rangle=GetMeasurement();
+    double sangle=sin(rangle);
+    double cangle=cos(rangle);
+    Move(output, sangle*xaxis+cangle*yaxis, cangle*yaxis-sangle*xaxis);
+}
+
+void drivetrain::Move(double rightward, double forward) {
+    xaxis=rightward;
+    yaxis=forward;
+}
+
+void drivetrain::SetAngleToField(double rotation) {
+    SetSetpoint (rotation);
+}
+
+double onewheeldrive::Move(
     double rotation,
     double forward,
     double rightward
@@ -44,7 +81,10 @@ void onewheeldrive::Move(
            halfangle = remquo(angle, 512, &n) + current, // new alignment is changed be as close as poss. to old
            spd = sqrt(rightward * rightward + forward * forward); // magnitude of drive
     if (n & 1)
-        spd = -spd; // backwards if wheel is reversed
-    drivetrain. Set (spd);
+        speed=-spd; // backwards if wheel is reversed
+    else
+        speed=spd;
+    //drivetrain. Set (spd);
     turn.Set(ControlMode::MotionMagic, halfangle);
+    return spd;
 } 
