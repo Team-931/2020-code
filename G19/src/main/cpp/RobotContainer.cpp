@@ -26,15 +26,16 @@ RobotContainer::RobotContainer() : m_autonomousCommand(&Drive), JoystickDrive(Jo
       else 
       Wheel.CoSensor(false); */}, &Wheel
     ));
-    Gun.SetDefaultCommand(frc2::RunCommand(
+    /* Gun.SetDefaultCommand(frc2::RunCommand(
       [this] {Gun.ShooterRPM(-3500/4*(int)(4*JoystickOperate.GetRawAxis(5)));},
       &Gun
-    ));
+    )); */
     Drive.SetDefaultCommand(frc2::RunCommand([this] {
       double ready=-JoystickDrive.GetY(), readx=JoystickDrive.GetX(), readz=JoystickDrive.GetZ();
       double magnitudevector=sqrt(ready*ready+readx*readx);
       ready*=magnitudevector, readx*=magnitudevector, readz*=abs(readz)/16;//divid by 16 will change to a name constant
-      Drive.Move(readz, ready, readx);
+      if(Drive.IsEnabled());
+      else Drive.Move(readz, ready, readx);
       }, &Drive));
       // Configure the button bindings
   ConfigureButtonBindings();
@@ -49,6 +50,14 @@ void RobotContainer::ConfigureButtonBindings() {
     Wheel.CoSensor(true);}).WhenReleased([this]{Wheel.CoSensor(false);});
   frc2::JoystickButton(&JoystickDrive, 4).WhenPressed([this]{
     frc::SmartDashboard::PutString("Rotator", RotateForColor() ? "Working" : "Failed");});
+  frc2::JoystickButton(&JoystickDrive, 5).WhenPressed([this]{
+    Drive.Enable();});
+  frc2::JoystickButton(&JoystickDrive, 6).WhenPressed([this]{
+    Drive.Disable();});
+  frc2::JoystickButton(&JoystickOperate, 7).WhenPressed([this]{
+    Gun.OpenGate();});
+  frc2::JoystickButton(&JoystickOperate, 8).WhenPressed([this]{
+    Gun.CloseGate();});
 //test code
     using constants::Cowl::CountMax, constants::Cowl::CountMin;
   frc2::JoystickButton(&JoystickDrive, 9).WhenReleased(
@@ -57,6 +66,10 @@ void RobotContainer::ConfigureButtonBindings() {
       frc::SmartDashboard::PutNumber("Cowl Goal", where);
       GunRoof.LiftCowl(where);}/*, &GunRoof*/
     );
+  frc2::JoystickButton(&JoystickOperate, 3).WhenPressed([this]{
+    Gun.ShooterRPM(3500);});
+  frc2::JoystickButton(&JoystickOperate, 4).WhenPressed([this]{
+    Gun.StopShooter();});
 }
 
 frc2::Command* RobotContainer::GetAutonomousCommand() {

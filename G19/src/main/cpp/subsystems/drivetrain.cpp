@@ -53,6 +53,7 @@ double drivetrain::GetMeasurement() {
 }
 
 
+
 void drivetrain::UseOutput(double output, double setpoint) {
     double rangle=GetMeasurement();
     double sangle=sin(rangle);

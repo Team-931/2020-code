@@ -21,7 +21,7 @@ namespace constants {
         constexpr const char * ColorNames[] = {"None yet", "Red", "Green", "Blue", "Yellow"};
     }
     namespace climber {constexpr int motorid=21;
-    constexpr int climbmoverid=10;
+    constexpr int climbmoverid=31;
     constexpr int ReachUp=7;
     constexpr int ReachDown =0;
     }
@@ -37,8 +37,8 @@ namespace constants {
         };
     }
     namespace shooter {constexpr int motorid=20;
-    constexpr int intakeid=3;
-    constexpr int hopperbeltid=31;
+    constexpr int intakeid=10;
+    constexpr int hopperbeltid=3;
     constexpr int Gateid=12;
     constexpr int AngleForward=5;
     constexpr int AngleBackward=2;
@@ -48,7 +48,7 @@ namespace constants {
     constexpr double kP=0.0006, kI=.0000001, kD=0, kIz=0,
      kFF=0.000015, kMaxOutput=1, kMinOutput=-1;}
     namespace WOFSpinner {
-        constexpr int Spinner{31};
+        constexpr int Spinner{10};
         constexpr int WheelRotation{40960};
             // Reports WheelOfFortune at 40960 ticks/rotation
         constexpr int WOFDiamater{2*12+8};
