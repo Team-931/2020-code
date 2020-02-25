@@ -34,6 +34,7 @@ auto constexpr wheelSide = frc::GenericHID::kLeftHand;
 RobotContainer::RobotContainer() : m_autonomousCommand(&wheel) {
   // Initialize all of your commands and subsystems here
   wheel.SetDefaultCommand(frc2::RunCommand([this](){
+    frc::SmartDashboard::PutNumber("POV", stick.GetPOV());
     double x = stick.GetY(spinSide), y = stick.GetX(spinSide);
     if(x*x+y*y > .09) wheel.RotateTo( atan2(x,y)/pi, mode);
   },&wheel));

@@ -42,7 +42,7 @@ turn (TurnMotor[wheel]), Location(WheelPositions[wheel]){
         bright.setspd();
         }
 
-drivetrain::drivetrain () :frc2::PIDSubsystem(frc2::PIDController(1,0,0))/*these are for PID*/{ 
+drivetrain::drivetrain () :frc2::PIDSubsystem(frc2::PIDController(.04,0,0))/*these are for PID*/{ 
     GetController().EnableContinuousInput(-pi,pi);
     Enable();
     }
@@ -58,7 +58,7 @@ void drivetrain::UseOutput(double output, double setpoint) {
     double rangle=GetMeasurement();
     double sangle=sin(rangle);
     double cangle=cos(rangle);
-    Move(output, sangle*xaxis+cangle*yaxis, cangle*yaxis-sangle*xaxis);
+    Move(output, sangle*xaxis+cangle*yaxis, cangle*xaxis-sangle*yaxis);
 }
 
 void drivetrain::Move(double rightward, double forward) {

@@ -59,6 +59,7 @@ class drivetrain : public frc2::PIDSubsystem {
    * Will be called periodically whenever the CommandScheduler runs.
    */
   //void Periodic() override;
+  AHRS & GetNavX() {return navx;}
 
  private:
 

@@ -31,10 +31,11 @@ RobotContainer::RobotContainer() : m_autonomousCommand(&Drive), JoystickDrive(Jo
       &Gun
     )); */
     Drive.SetDefaultCommand(frc2::RunCommand([this] {
+      frc::SmartDashboard::PutNumber("Yaw", Drive.GetNavX().GetYaw());
       double ready=-JoystickDrive.GetY(), readx=JoystickDrive.GetX(), readz=JoystickDrive.GetZ();
       double magnitudevector=sqrt(ready*ready+readx*readx);
       ready*=magnitudevector, readx*=magnitudevector, readz*=abs(readz)/16;//divid by 16 will change to a name constant
-      if(Drive.IsEnabled());
+      if(Drive.IsEnabled()) Drive.Move(readx, ready);
       else Drive.Move(readz, ready, readx);
       }, &Drive));
       // Configure the button bindings
@@ -70,6 +71,8 @@ void RobotContainer::ConfigureButtonBindings() {
     Gun.ShooterRPM(3500);});
   frc2::JoystickButton(&JoystickOperate, 4).WhenPressed([this]{
     Gun.StopShooter();});
+  frc2::JoystickButton(&JoystickDrive, 8).WhenPressed([this]{
+    Drive.GetNavX().ZeroYaw();});
 }
 
 frc2::Command* RobotContainer::GetAutonomousCommand() {
