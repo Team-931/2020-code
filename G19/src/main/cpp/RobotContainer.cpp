@@ -28,10 +28,12 @@ RobotContainer::RobotContainer() : m_autonomousCommand(&Drive), JoystickDrive(Jo
       else 
       Wheel.CoSensor(false); */}, &Wheel
     ));
-    /* Gun.SetDefaultCommand(frc2::RunCommand(
-      [this] {Gun.ShooterRPM(-3500/4*(int)(4*JoystickOperate.GetRawAxis(5)));},
+    Gun.SetDefaultCommand(frc2::RunCommand(
+      [this] {
+        frc::SmartDashboard::PutNumber("ShootRPM", Gun.ReturnRPM());//Look and see if needed for the SmartDashboard
+        /* Gun.ShooterRPM(-3500/4*(int)(4*JoystickOperate.GetRawAxis(5))); */},
       &Gun
-    )); */
+    ));
     Drive.SetDefaultCommand(frc2::RunCommand([this] {
       frc::SmartDashboard::PutNumber("Yaw", Drive.GetNavX().GetYaw());
       double ready=-JoystickDrive.GetY(), readx=JoystickDrive.GetX(), readz=JoystickDrive.GetZ();
