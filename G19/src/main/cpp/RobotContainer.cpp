@@ -18,6 +18,8 @@ const int HDownCUp{2};
 
 RobotContainer::RobotContainer() : m_autonomousCommand(&Drive), JoystickDrive(JoystickDriveID), JoystickOperate(JoystickOperateID) {
   // Initialize all of your commands and subsystems here
+    frc::SmartDashboard::SetDefaultNumber("Shooter speed", 3500);// for use on shoot button
+
     Wheel.SetDefaultCommand(frc2::RunCommand( //This all is temporary for testing
       [this]{frc::SmartDashboard::PutString("ColorFound", ColorNames[Wheel.FindColor()]);
             CheckScoreColor();
@@ -35,7 +37,10 @@ RobotContainer::RobotContainer() : m_autonomousCommand(&Drive), JoystickDrive(Jo
       double ready=-JoystickDrive.GetY(), readx=JoystickDrive.GetX(), readz=JoystickDrive.GetZ();
       double magnitudevector=sqrt(ready*ready+readx*readx);
       ready*=magnitudevector, readx*=magnitudevector, readz*=abs(readz)/16;//divid by 16 will change to a name constant
-      if(Drive.IsEnabled()) Drive.Move(readx, ready);
+      if(Drive.IsEnabled()) {
+        Drive.Move(readx, ready);
+        if(int pov = JoystickDrive.GetPOV(); pov >=0) Drive.SetAngleToField(remainder(pov, 360));
+        }
       else Drive.Move(readz, ready, readx);
       }, &Drive));
       // Configure the button bindings
@@ -68,10 +73,18 @@ void RobotContainer::ConfigureButtonBindings() {
       [this]{frc::SmartDashboard::PutNumber("Cowl Counter", GunRoof.GetCount());
       int where = (CountMin + CountMax - (CountMax - CountMin) * JoystickDrive.GetY())/2;
       frc::SmartDashboard::PutNumber("Cowl Goal", where);
-      GunRoof.LiftCowl(where);}/*, &GunRoof*/
+      GunRoof.LiftCowl(where);}
+    );
+  frc2::JoystickButton(&JoystickOperate, 9).WhenReleased(
+      [this]{frc::SmartDashboard::PutNumber("Cowl Counter", GunRoof.GetCount());
+      int what = -10 * JoystickOperate.GetY();
+      //frc::SmartDashboard::PutNumber("Cowl Goal", where);
+      GunRoof.LiftCowlBy(what);}
     );
   frc2::JoystickButton(&JoystickOperate, 3).WhenPressed([this]{
-    Gun.ShooterRPM(3500);});
+    double spd = frc::SmartDashboard::GetNumber("Shooter speed", 3500);
+    Gun.ShooterRPM(spd);
+    });
   frc2::JoystickButton(&JoystickOperate, 4).WhenPressed([this]{
     Gun.StopShooter();});
   frc2::JoystickButton(&JoystickDrive, 8).WhenPressed([this]{

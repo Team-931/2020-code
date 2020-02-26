@@ -24,6 +24,15 @@ void Cowl::LiftCowl(int DesiredLocation) {
     else{MotorVelocity = -1; DesiredTicks = -DesiredTicks;}
 }
 
+void Cowl::LiftCowlBy(int Change) {
+    CurrentPosition+=CowlCounter.Get()*MotorVelocity;
+    CowlCounter.Reset();
+    DesiredTicks=Change;
+    if(DesiredTicks > 0){MotorVelocity = 1;}
+    else if(DesiredTicks == 0){MotorVelocity = 0;}
+    else{MotorVelocity = -1; DesiredTicks = -DesiredTicks;}
+}
+
 void Cowl::Periodic() {
     if(DesiredTicks > CowlCounter.Get()) CowlLift.Set(MotorVelocity*.5);
     else CowlLift.StopMotor();

@@ -22,6 +22,10 @@ class Cowl : public frc2::SubsystemBase {
    * it it can't, close to the desired level
   */
   void LiftCowl(int DesiredLocation);
+  /** increment Cowl level
+   * @param Change
+  */
+ void LiftCowlBy(int Change);
   /**
    * Will be called periodically whenever the CommandScheduler runs.
    */
