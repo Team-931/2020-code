@@ -51,12 +51,12 @@ RobotContainer::RobotContainer() : m_autonomousCommand(&Drive), JoystickDrive(Jo
 
 void RobotContainer::ConfigureButtonBindings() {
   // Configure your button bindings here
-  frc2::JoystickButton(&JoystickOperate, 2).WhenPressed([this]{
-    Hopperclimber(BothUp);});
-  frc2::JoystickButton(&JoystickOperate, 1).WhenPressed([this]{//Check to make sure and see if they need both down
-    Hopperclimber(HDownCUp);});
   frc2::JoystickButton(&JoystickOperate, 5).WhenPressed([this]{
-    Hopperclimber(BothDown);});
+    Hopperclimber(BothUp);});
+  frc2::JoystickButton(&JoystickOperate, 6).WhenPressed([this]{//Check to make sure and see if they need both down
+    Hopperclimber(HDownCUp);});
+  frc2::JoystickButton(&JoystickOperate, 15).WhenPressed([this]{
+    Hopperclimber(BothDown);}); //change this button later on
   frc2::JoystickButton(&JoystickDrive, 2).WhenPressed([this]{
     Wheel.CoSensor(true);}).WhenReleased([this]{Wheel.CoSensor(false);});
   frc2::JoystickButton(&JoystickDrive, 4).WhenPressed([this]{
@@ -65,10 +65,10 @@ void RobotContainer::ConfigureButtonBindings() {
     Drive.Enable();});
   frc2::JoystickButton(&JoystickDrive, 6).WhenPressed([this]{
     Drive.Disable();});
-  frc2::JoystickButton(&JoystickOperate, 7).WhenPressed([this]{
-    Gun.OpenGate();});
-  frc2::JoystickButton(&JoystickOperate, 8).WhenPressed([this]{
-    Gun.CloseGate();});
+  frc2::JoystickButton(&JoystickOperate, 3).WhileHeld([this]{
+    double GateOpen = JoystickOperate.GetX();
+    if(GateOpen <= -0.1) Gun.OpenGate();
+    else Gun.CloseGate();});
 //test code
     using constants::Cowl::CountMax, constants::Cowl::CountMin;
   frc2::JoystickButton(&JoystickDrive, 9).WhenReleased(
@@ -77,13 +77,13 @@ void RobotContainer::ConfigureButtonBindings() {
       frc::SmartDashboard::PutNumber("Cowl Goal", where);
       GunRoof.LiftCowl(where);}
     );
-  frc2::JoystickButton(&JoystickOperate, 9).WhenReleased(
+  frc2::JoystickButton(&JoystickOperate, 11).WhenReleased(
       [this]{frc::SmartDashboard::PutNumber("Cowl Counter", GunRoof.GetCount());
       int what = -10 * JoystickOperate.GetY();
       //frc::SmartDashboard::PutNumber("Cowl Goal", where);
       GunRoof.LiftCowlBy(what);}
     );
-  frc2::JoystickButton(&JoystickOperate, 3).WhenPressed([this]{
+  frc2::JoystickButton(&JoystickOperate, 1).WhenPressed([this]{
     double spd = frc::SmartDashboard::GetNumber("Shooter speed", 3500);
     Gun.ShooterRPM(spd);
     });
@@ -91,6 +91,16 @@ void RobotContainer::ConfigureButtonBindings() {
     Gun.StopShooter();});
   frc2::JoystickButton(&JoystickDrive, 8).WhenPressed([this]{
     Drive.GetNavX().ZeroYaw();});
+  frc2::JoystickButton(&JoystickOperate, 10).WhileHeld([this]{
+    double Transfer = JoystickOperate.GetRawAxis(3);
+    if(Transfer <= -0.1) Gun.TransferForwards();
+    else if(Transfer >= 0.1) Gun.TransferBackwards();
+    else Gun.TransferOff();});
+  frc2::JoystickButton(&JoystickOperate, 9).WhileHeld([this]{
+double Pickup = JoystickOperate.GetY();
+    if(Pickup <= -0.1) Gun.PickUpForwards();
+    else if(Pickup >= 0.1) Gun.PickUpBackwards();
+    else Gun.PickUpOff();});
 }
 
 frc2::Command* RobotContainer::GetAutonomousCommand() {
