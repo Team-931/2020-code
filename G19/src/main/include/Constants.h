@@ -29,12 +29,16 @@ namespace constants {
         // front left, front right, back left, back right 
         constexpr int TurnMotor[]={6,5,7,8},
         DriveMotor[]={9,2,4,1};
+        constexpr double RL = 11.5, FB = 11.875;
         constexpr Coordinate WheelPositions[]={
-            {-11.5, 11.875},
-            {11.5, 11.875},
-            {-11.5, -11.875},
-            {11.5, -11.875},
+            {-RL, FB},
+            {RL, FB},
+            {-RL, -FB},
+            {RL, -FB},
         };
+        constexpr double WheelRadius=sqrt(RL*RL+FB*FB);
+        constexpr double Maxspeed=2.5*360*.02;//This is one rotation for every 2 seconds, .02 is how many seconds the controler updates
+        constexpr double Minispeed=.001;//Ratio of minimum speed to Maximum speed
     }
     namespace shooter {constexpr int motorid=20;
     constexpr int intakeid=10;

@@ -31,17 +31,22 @@ RobotContainer::RobotContainer() : m_autonomousCommand(&Drive), JoystickDrive(Jo
     Gun.SetDefaultCommand(frc2::RunCommand(
       [this] {
         frc::SmartDashboard::PutNumber("ShootRPM", Gun.ReturnRPM());//Look and see if needed for the SmartDashboard
-        /* Gun.ShooterRPM(-3500/4*(int)(4*JoystickOperate.GetRawAxis(5))); */},
+        /* Gun.ShooterRPM(-3500/4*(int)(4*JoystickOperate.GetRawAxis(5))); */
+        frc::SmartDashboard::PutNumber("intakeCurrent", Gun.intakecurrent());},
       &Gun
     ));
     Drive.SetDefaultCommand(frc2::RunCommand([this] {
-      frc::SmartDashboard::PutNumber("Yaw", Drive.GetNavX().GetYaw());
+      double NavxYaw = Drive.GetNavX().GetYaw();
+      frc::SmartDashboard::PutNumber("Yaw", NavxYaw);
       double ready=-JoystickDrive.GetY(), readx=JoystickDrive.GetX(), readz=JoystickDrive.GetZ();
       double magnitudevector=sqrt(ready*ready+readx*readx);
-      ready*=magnitudevector, readx*=magnitudevector, readz*=abs(readz)/16;//divid by 16 will change to a name constant
+      ready*=magnitudevector, readx*=magnitudevector, readz*=abs(readz)/constants::drivetrain::WheelRadius;//divid by 16 will change to a name constant
       if(Drive.IsEnabled()) {
         Drive.Move(readx, ready);
-        if(int pov = JoystickDrive.GetPOV(); pov >=0) Drive.SetAngleToField(remainder(pov, 360));
+        if(int pov = JoystickDrive.GetPOV(); pov >=0) Drive.SetAngleToField(pov);
+        
+        else if (abs(readz)>constants::drivetrain::Minispeed)
+          Drive.SetAngleToField(Drive.GetController().GetSetpoint()+readz*constants::drivetrain::Maxspeed);
         }
       else Drive.Move(readz, ready, readx);
       }, &Drive));

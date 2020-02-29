@@ -67,7 +67,7 @@ void drivetrain::Move(double rightward, double forward) {
 }
 
 void drivetrain::SetAngleToField(double rotation) {
-    SetSetpoint (rotation);
+    SetSetpoint (remainder(rotation, 360));
 }
 
 double onewheeldrive::Move(

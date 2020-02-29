@@ -73,6 +73,8 @@ class shooter : public frc2::SubsystemBase {
   void SolenoidUp();
       /* Puts down the Intake to pick up Power Cells */
   void SolenoidDown();
+      //expand later
+  double intakecurrent(){return intake.GetStatorCurrent();}
 
 
 
