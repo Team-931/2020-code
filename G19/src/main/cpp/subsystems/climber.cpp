@@ -16,6 +16,10 @@ void climber::reach(){
 void climber::carry(){
     ClimbMotor.Set(-1);}
 
+void climber::still() {
+    ClimbMotor.Set(0);
+}
+
 void climber::raise(){
     Reach.Set(frc::DoubleSolenoid::kForward);}
 
