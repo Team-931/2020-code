@@ -30,13 +30,18 @@ LeftSolenoid(SolenoidForward, SolenoidBackward)
 
 void shooter::Periodic() {
   // Implementation of subsystem periodic method goes here.
-  if(GateOpen) Gate.Set(1);
+  if(double rpm = shooterencoder.GetVelocity(); GateOpen && rpm >= minRPM &&  rpm <= maxRPM) Gate.Set(1);
   else Gate.Set(-1);
 
   intake.Set(PickupSpeed);
   hopperbelt.Set(TransferSpeed);
 }
 // Implements
+  void shooter::ShooterRPM(double RPM) {
+    minRPM = .98 * RPM;
+    maxRPM = 1.02 * RPM;
+    shootermotor.GetPIDController ().SetReference(RPM, rev::kVelocity);
+    }
 
   void shooter::TransferForwards() {TransferSpeed = 1;}
   void shooter::TransferOff() {TransferSpeed = 0;}

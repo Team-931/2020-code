@@ -37,7 +37,7 @@ class shooter : public frc2::SubsystemBase {
     //  Can be changed later in the game
   double TransferSpeed=0;
   
-
+  double minRPM, maxRPM;
  public:
   shooter();
   /**
@@ -52,7 +52,7 @@ class shooter : public frc2::SubsystemBase {
   void CloseGate() {GateOpen = false;}
       /*  Tells how fast the Shooter should spin
           How fast it rotates will give the Power Cell its Distance and Spin for better aim */
-  void ShooterRPM(double RPM) {shootermotor.GetPIDController ().SetReference(RPM, rev::kVelocity);}
+  void ShooterRPM(double RPM);
       //  Stop the Shooter Motor
   void StopShooter() {shootermotor.StopMotor();};
       //  Returns RPM(Rotations Per Minute)
