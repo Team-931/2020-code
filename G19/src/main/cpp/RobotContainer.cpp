@@ -61,7 +61,10 @@ void RobotContainer::ConfigureButtonBindings() {
   frc2::JoystickButton(&JoystickOperate, 1).WhenPressed([this]{
     double spd = frc::SmartDashboard::GetNumber("Shooter speed", 3500);
     Gun.ShooterRPM(spd);
+    Gun.TransferForwards();
+    Gun.OpenGate();
     });
+  
   frc2::JoystickButton(&JoystickOperate, 4).WhenPressed([this]{
     Gun.StopShooter();});
     // gate control
