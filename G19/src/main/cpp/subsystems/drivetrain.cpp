@@ -18,9 +18,8 @@ turn (TurnMotor[wheel]), Location(WheelPositions[wheel]){
     turn.ConfigFeedbackNotContinuous(false);
     }
     double bigger(double x,double y){
-        if(x>y)
-            return x;
-            return y;}
+        if(x>y) return x;
+        return y;}
     void drivetrain::Move(
         double rotation,
         double forward,
