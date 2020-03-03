@@ -66,7 +66,10 @@ void RobotContainer::ConfigureButtonBindings() {
     });
   
   frc2::JoystickButton(&JoystickOperate, 4).WhenPressed([this]{
-    Gun.StopShooter();});
+    Gun.StopShooter();
+    Gun.CloseGate();
+    Gun.TransferOff();//ask if needs to be reversed
+    });
     // gate control
   frc2::JoystickButton(&JoystickOperate, 3).WhileHeld([this]{
     double GateOpen = JoystickOperate.GetY();
@@ -79,7 +82,7 @@ void RobotContainer::ConfigureButtonBindings() {
   frc2::JoystickButton(&JoystickOperate, 6).WhenPressed([this]{//Check to make sure and see if they need both down
     Hopperclimber(HDownCUp);});
     // mast down
-  frc2::JoystickButton(&JoystickOperate, 15).WhenPressed([this]{
+  frc2::JoystickButton(&JoystickOperate, 2).WhenPressed([this]{
     Hopperclimber(BothDown);}); //change this button later on
     // intake
   frc2::JoystickButton(&JoystickOperate, 9).WhileHeld([this]{
