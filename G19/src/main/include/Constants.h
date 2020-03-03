@@ -52,7 +52,7 @@ namespace constants {
     constexpr double kP=0.0006, kI=.0000001, kD=0, kIz=0,
      kFF=0.000015, kMaxOutput=1, kMinOutput=-1;}
     namespace WOFSpinner {
-        constexpr int Spinner{10};
+        constexpr int Spinner{31};
         constexpr int WheelRotation{40960};
             // Reports WheelOfFortune at 40960 ticks/rotation
         constexpr int WOFDiamater{2*12+8};

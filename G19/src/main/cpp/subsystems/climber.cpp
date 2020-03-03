@@ -4,7 +4,7 @@
 using namespace constants::climber;
 
                                         // Changed Motor type from Brushless to Brushed
-climber::climber():ClimbMover(climbmoverid), ClimbMotor(motorid, rev::CANSparkMax::MotorType::kBrushed),
+climber::climber():/* ClimbMover(climbmoverid), */ ClimbMotor(motorid, rev::CANSparkMax::MotorType::kBrushed),
 Reach(ReachUp, ReachDown){
     ClimbMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);}
 
@@ -27,4 +27,4 @@ void climber::lower(){
     Reach.Set(frc::DoubleSolenoid::kReverse);}
 
 void climber::SidewaysSpeed(double Speed){
-    ClimbMover.Set(Speed);}
+    /* ClimbMover.Set(Speed); */}

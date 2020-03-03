@@ -75,9 +75,7 @@ class shooter : public frc2::SubsystemBase {
   void SolenoidDown();
       //expand later
   double intakecurrent(){return intake.GetStatorCurrent();}
-
-
-
+  
  private:
   // Components (e.g. motor controllers and sensors) should generally be
   // declared private and exposed only through public methods.
