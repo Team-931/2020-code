@@ -11,6 +11,8 @@
 # include <frc/DriverStation.h>
 # include <frc/smartdashboard/SmartDashboard.h>
 #include <frc2/command/RunCommand.h>
+# include <frc2/command/ParallelRaceGroup.h>
+# include <frc2/command/SequentialCommandGroup.h>
 
 using namespace constants::RobotContainer;
 const int BothUp{0};
@@ -147,8 +149,18 @@ void RobotContainer::ConfigureButtonBindings() {
 }
 
 frc2::Command* RobotContainer::GetAutonomousCommand() {
+  static frc2::Command* it = new frc2::SequentialCommandGroup (
+    frc2::RunCommand([this] {
+      Drive.Move(0,.5);
+    }, &Drive).WithTimeout(5_ft/4.8_fps),
+    frc2::RunCommand([this]{
+      Drive.Move(.5,0);
+    }, &Drive).WithTimeout(2_ft/4.8_fps)
+  );
+  return it;
+
   // An example command will be run in autonomous
-  return &m_autonomousCommand;
+  //return &m_autonomousCommand;
 }
 
 uint32_t RobotContainer::SpecificColor(){
