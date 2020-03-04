@@ -64,9 +64,11 @@ class drivetrain : public frc2::PIDSubsystem {
  private:
 
     AHRS navx {::SPI::kMXP};//reports in degrees, clockwise
-
+    // saved motion components
     double xaxis=0;
     double yaxis=0;
+    // for feed-forward rotation
+    double futureSetpoint;
 
   // Components (e.g. motor controllers and sensors) should generally be
   // declared private and exposed only through public methods.

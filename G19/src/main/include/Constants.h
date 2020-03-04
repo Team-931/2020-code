@@ -20,7 +20,7 @@ namespace constants {
         constexpr int JoystickDriveID=0, JoystickOperateID=1;
         constexpr const char * ColorNames[] = {"None yet", "Red", "Green", "Blue", "Yellow"};
     }
-    namespace climber {constexpr int motorid=21;
+    namespace climber {constexpr int motorid=17;
     constexpr int climbmoverid=31;
     constexpr int ReachUp=7;
     constexpr int ReachDown =0;
@@ -40,7 +40,7 @@ namespace constants {
         constexpr double Maxspeed=4.0*360*.02;//This is one rotation for every 2 seconds, .02 is how many seconds the controler updates
         constexpr double Minispeed=.001;//Ratio of minimum speed to Maximum speed
     }
-    namespace shooter {constexpr int motorid=20;
+    namespace shooter {constexpr int motorid=20, mid2 = 21;
     constexpr int intakeid=10;
     constexpr int hopperbeltid=3;
     constexpr int Gateid=12;

@@ -9,7 +9,8 @@
 
 using namespace constants::shooter;
 
-shooter::shooter():shootermotor(motorid, rev::CANSparkMax::MotorType::kBrushless),
+shooter::shooter():shootermotor(motorid, rev::CANSparkMax::MotorType::kBrushless), 
+m2(mid2, rev::CANSparkMax::MotorType::kBrushless),
 hopperbelt(hopperbeltid),
 intake(intakeid),
 Gate(Gateid),
@@ -17,7 +18,8 @@ RightSolenoid(AngleForward, AngleBackward),
 LeftSolenoid(SolenoidForward, SolenoidBackward)
  {
   // Implementation of subsystem constructor goes here.
-  shootermotor.RestoreFactoryDefaults();
+  shootermotor.RestoreFactoryDefaults(); m2.RestoreFactoryDefaults();
+  m2.Follow(shootermotor, true);
   rev::CANPIDController UniqueName = shootermotor.GetPIDController();
       UniqueName.SetP(kP);
       UniqueName.SetI(kI);

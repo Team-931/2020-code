@@ -43,6 +43,7 @@ turn (TurnMotor[wheel]), Location(WheelPositions[wheel]){
 
 drivetrain::drivetrain () :frc2::PIDSubsystem(frc2::PIDController(.04/60,0,0))/*these are for PID*/{ 
     GetController().EnableContinuousInput(-180, 180);
+    futureSetpoint = GetMeasurement();
     Enable();
     }
 
@@ -51,13 +52,15 @@ double drivetrain::GetMeasurement() {
     return navx.GetYaw();
 }
 
-
-
 void drivetrain::UseOutput(double output, double setpoint) {
     double rangle=GetMeasurement()*pi/180;
     double sangle=sin(rangle);
     double cangle=cos(rangle);
     Move(output, sangle*xaxis+cangle*yaxis, cangle*xaxis-sangle*yaxis);
+    double changeangle = remainder(futureSetpoint - setpoint, 360);
+    if(changeangle >= Maxspeed) SetSetpoint(remainder(setpoint + Maxspeed, 360));
+    else if(changeangle <= -Maxspeed) SetSetpoint(remainder(setpoint - Maxspeed, 360));
+    else SetSetpoint(futureSetpoint);
 }
 
 void drivetrain::Move(double rightward, double forward) {
@@ -66,7 +69,7 @@ void drivetrain::Move(double rightward, double forward) {
 }
 
 void drivetrain::SetAngleToField(double rotation) {
-    SetSetpoint (remainder(rotation, 360));
+    futureSetpoint = remainder(rotation, 360);
 }
 
 double onewheeldrive::Move(

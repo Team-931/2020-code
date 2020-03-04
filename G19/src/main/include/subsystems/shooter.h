@@ -15,7 +15,7 @@
 
 class shooter : public frc2::SubsystemBase {
     //  Fires the Power Cells out of shooter to goal 
-  rev::CANSparkMax shootermotor;
+  rev::CANSparkMax shootermotor, m2;
     //  Lets us know the speed the motors are going to firing the Power Cells at the goal
   rev::CANEncoder shooterencoder{shootermotor};
     //  Passes the Power Cells from Intake to the Shooter to fire
