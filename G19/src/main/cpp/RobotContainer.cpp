@@ -20,6 +20,27 @@ const int BothUp{1};
 const int BothDown{0};
 const int HDownCUp{2};
 
+auto TranslateAim(drivetrain & drv, double spd){
+  return frc2::RunCommand([&drv, spd]{
+    auto target = VisionControl::GetTarget();
+    if(target.found) drv.Move(target.horiz/14*abs(spd), 0);
+    else drv.Move(spd, 0);
+    }, &drv) 
+  //. WithInterrupt([]{return VisionControl::GetTarget().found;}) 
+  . WithTimeout(10_s);
+}
+auto RotateAim(drivetrain & drv, double spd) {
+  spd*=constants::drivetrain::Maxspeed;
+  return frc2::RunCommand([&drv, spd]{
+    auto target = VisionControl::GetTarget();
+    if(target.found) drv.SetAngleToField(drv.GetController().GetSetpoint()+abs(spd)*target.horiz/14);
+    else drv.SetAngleToField(drv.GetController().GetSetpoint()+spd);
+    }, &drv) 
+  //. WithInterrupt([]{return VisionControl::GetTarget().found;}) 
+  . WithTimeout(10_s);
+
+}
+
 RobotContainer::RobotContainer() : m_autonomousCommand(&Drive), JoystickDrive(JoystickDriveID), JoystickOperate(JoystickOperateID) {
   // Initialize all of your commands and subsystems here
     frc::SmartDashboard::SetDefaultNumber("Shooter speed", 3500);// for use on shoot button
@@ -114,6 +135,12 @@ void RobotContainer::ConfigureButtonBindings() {
       //frc::SmartDashboard::PutNumber("Cowl Goal", where);
       GunRoof.LiftCowlBy(what);}
     );
+//TEMP
+//Find target by sliding
+  frc2::JoystickButton(&JoystickOperate, 12).WhenPressed(
+    TranslateAim(Drive, -.5)
+  );
+
     //end game commands:
     // climb
   frc2::POVButton(&JoystickOperate, 0)
@@ -166,11 +193,6 @@ auto DeadReckon(drivetrain & drv, double spd, units::foot_t rtwd, units::foot_t 
       drv.Move(rtwd/dist*spd, fwd/dist*spd);
     }, &drv).WithTimeout(dist/spd/9.6_fps);
 }
-auto TranslateAim(drivetrain & drv, double spd){
-  return frc2::RunCommand([&drv, spd]{drv.Move(spd, 0);}, &drv) 
-  . WithInterrupt([]{return VisionControl::GetTarget().found;});
-}
-//auto RotateAim(double spd) {}
 frc2::Command* RobotContainer::GetAutonomousCommand() {
   static frc2::Command* it = new frc2::SequentialCommandGroup (
   /*  frc2::RunCommand([this] {
