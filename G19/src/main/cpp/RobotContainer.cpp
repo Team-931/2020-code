@@ -69,44 +69,54 @@ void RobotContainer::ConfigureButtonBindings() {
     Gun.TransferForwards();
     Gun.OpenGate();
     });
+
     //When Shooter ends, stop Shooter, Gate, and Hopperbelt
   frc2::JoystickButton(&JoystickOperate, 4).WhenPressed([this]{
     Gun.StopShooter();
     Gun.CloseGate();
     Gun.TransferOff();//ask if needs to be reversed
     });
+
     //Control when Gate is Open or Closed
   frc2::JoystickButton(&JoystickOperate, 3).WhileHeld([this]{
     double GateOpen = JoystickOperate.GetY();
     if(GateOpen <= -0.1) Gun.OpenGate();
     else Gun.CloseGate();});
+
     //Raise the Intake and Climber
   frc2::JoystickButton(&JoystickOperate, 5).WhenPressed([this]{
     Hopperclimber(BothUp);});
+
     //Lower the Intake, Raise the Climber up
   frc2::JoystickButton(&JoystickOperate, 6).WhenPressed([this]{//Check to make sure and see if they need both down
     Hopperclimber(HDownCUp);});
+
     // mast down (climber)
   frc2::JoystickButton(&JoystickOperate, 2).WhenPressed([this]{
     Hopperclimber(BothDown);});
+
     //switch limelight into a normal camera
   frc2::JoystickButton(&JoystickOperate, 7).WhenPressed([]{
     VisionControl::DriverCam();});
+
     //switch limelight to normal limelight settings
   frc2::JoystickButton(&JoystickOperate, 8).WhenPressed([]{
     VisionControl::TargetFind();});
+
     // Pickup Control / (Intake Control)
   frc2::JoystickButton(&JoystickOperate, 9).WhileHeld([this]{
     double Pickup = JoystickOperate.GetY();
     if(Pickup <= -0.1) Gun.PickUpForwards();
     else if(Pickup >= 0.1) Gun.PickUpBackwards();
     else Gun.PickUpOff();});
+
     // Transfer Control / (Hopperbelt Control)
   frc2::JoystickButton(&JoystickOperate, 10).WhileHeld([this]{
     double Transfer = JoystickOperate.GetRawAxis(3);
     if(Transfer <= -0.1) Gun.TransferForwards();
     else if(Transfer >= 0.1) Gun.TransferBackwards();
     else Gun.TransferOff();});
+
     // Cowl raising
   frc2::JoystickButton(&JoystickOperate, 11).WhenReleased(
       [this]{frc::SmartDashboard::PutNumber("Cowl Counter", GunRoof.GetCount());
@@ -114,20 +124,24 @@ void RobotContainer::ConfigureButtonBindings() {
       //frc::SmartDashboard::PutNumber("Cowl Goal", where);
       GunRoof.LiftCowlBy(what);}
     );
+
     //end game commands:
     // climb
   frc2::POVButton(&JoystickOperate, 0)
     .WhenPressed([this]{Climb.reach();})
     .WhenReleased([this]{Climb.still();});
-  //slide right
+
+    // Slide Right
   frc2::POVButton(&JoystickOperate, 90)
     .WhenPressed([this]{Climb.SidewaysSpeed(1);})
     .WhenReleased([this]{Climb.SidewaysSpeed(0);});
-  // slide left
+
+    // Slide Left
   frc2::POVButton(&JoystickOperate, 270)
     .WhenPressed([this]{Climb.SidewaysSpeed(-1);})
     .WhenReleased([this]{Climb.SidewaysSpeed(0);});
-    // rewind
+
+    // Rewind
   frc2::POVButton(&JoystickOperate, 180)
     .WhenPressed([this]{Climb.carry();})
     .WhenReleased([this]{Climb.still();});
@@ -140,15 +154,19 @@ void RobotContainer::ConfigureButtonBindings() {
     // WOF go for count
   frc2::JoystickButton(&JoystickDrive, 1).WhenPressed([this]{
     RotateForCount();});
+
     // WOF go for color
   frc2::JoystickButton(&JoystickDrive, 4).WhenPressed([this]{
     frc::SmartDashboard::PutString("Rotator", RotateForColor() ? "Working" : "Failed");});
+
     //Field Orientation : Enabled
   frc2::JoystickButton(&JoystickDrive, 5).WhenPressed([this]{
     Drive.Enable();});
+
     //Field Orientation : Disabled
   frc2::JoystickButton(&JoystickDrive, 6).WhenPressed([this]{
     Drive.Disable();});
+
   //test code
     using constants::Cowl::CountMax, constants::Cowl::CountMin;
   frc2::JoystickButton(&JoystickDrive, 9).WhenReleased(
@@ -157,6 +175,8 @@ void RobotContainer::ConfigureButtonBindings() {
       frc::SmartDashboard::PutNumber("Cowl Goal", where);
       GunRoof.LiftCowl(where);}
     );
+
+  //Reset the Yaw 0
   frc2::JoystickButton(&JoystickDrive, 8).WhenPressed([this]{
     Drive.GetNavX().ZeroYaw();});
 }
