@@ -19,6 +19,7 @@
  * directly; this is crucially important, or else the decorator functions in
  * Command will *not* work!
  */
+ //This is also autonomus
 class ExampleCommand
     : public frc2::CommandHelper<frc2::CommandBase, ExampleCommand> {
  public:

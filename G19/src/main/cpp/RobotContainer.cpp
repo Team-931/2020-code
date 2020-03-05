@@ -6,6 +6,7 @@
 /*----------------------------------------------------------------------------*/
 
 #include "RobotContainer.h"
+#include "VisionControl.h"
 # include <frc2/command/button/JoystickButton.h>
 # include <frc2/command/button/POVButton.h>
 # include <frc/DriverStation.h>
@@ -86,6 +87,12 @@ void RobotContainer::ConfigureButtonBindings() {
     // mast down
   frc2::JoystickButton(&JoystickOperate, 2).WhenPressed([this]{
     Hopperclimber(BothDown);}); //change this button later on
+    //switch limelight into a normal camera
+  frc2::JoystickButton(&JoystickOperate, 7).WhenPressed([]{
+    VisionControl::DriverCam();});
+    //switch limelight to normal limelight settings
+  frc2::JoystickButton(&JoystickOperate, 8).WhenPressed([]{
+    VisionControl::TargetFind();});
     // intake
   frc2::JoystickButton(&JoystickOperate, 9).WhileHeld([this]{
     double Pickup = JoystickOperate.GetY();
