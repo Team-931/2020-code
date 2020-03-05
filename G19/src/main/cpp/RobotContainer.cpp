@@ -153,13 +153,13 @@ void RobotContainer::ConfigureButtonBindings() {
     );
   frc2::JoystickButton(&JoystickDrive, 8).WhenPressed([this]{
     Drive.GetNavX().ZeroYaw();});
-}/* 
-auto DeadReckon(drivetrain & drv, units::fps spd, units::feet const rtwd, units::feet const fwd){
+}
+auto DeadReckon(drivetrain & drv, double spd, units::foot_t rtwd, units::foot_t fwd){
   auto dist = units::math::hypot(rtwd, fwd);
   return frc2::RunCommand([=,&drv] {
       drv.Move(rtwd/dist*spd, fwd/dist*spd);
     }, &drv).WithTimeout(dist/spd/9.6_fps);
-} */
+}
 frc2::Command* RobotContainer::GetAutonomousCommand() {
   static frc2::Command* it = new frc2::SequentialCommandGroup (
     frc2::RunCommand([this] {
@@ -167,7 +167,8 @@ frc2::Command* RobotContainer::GetAutonomousCommand() {
     }, &Drive).WithTimeout(5_ft/4.8_fps),
     frc2::RunCommand([this]{
       Drive.Move(.5,0);
-    }, &Drive).WithTimeout(2_ft/4.8_fps)
+    }, &Drive).WithTimeout(2_ft/4.8_fps),
+    DeadReckon(Drive, .5, 3_ft, 4_ft)
   );
   return it;
 
