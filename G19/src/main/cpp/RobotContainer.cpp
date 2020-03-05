@@ -166,6 +166,11 @@ auto DeadReckon(drivetrain & drv, double spd, units::foot_t rtwd, units::foot_t 
       drv.Move(rtwd/dist*spd, fwd/dist*spd);
     }, &drv).WithTimeout(dist/spd/9.6_fps);
 }
+auto TranslateAim(drivetrain & drv, double spd){
+  return frc2::RunCommand([&drv, spd]{drv.Move(spd, 0);}, &drv) 
+  . WithInterrupt([]{return VisionControl::GetTarget().found;});
+}
+//auto RotateAim(double spd) {}
 frc2::Command* RobotContainer::GetAutonomousCommand() {
   static frc2::Command* it = new frc2::SequentialCommandGroup (
   /*  frc2::RunCommand([this] {
