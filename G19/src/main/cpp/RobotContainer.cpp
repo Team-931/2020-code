@@ -16,14 +16,14 @@
 # include <frc2/command/SequentialCommandGroup.h>
 
 using namespace constants::RobotContainer;
-const int BothUp{0};
-const int BothDown{1};
+const int BothUp{1};
+const int BothDown{0};
 const int HDownCUp{2};
 
 RobotContainer::RobotContainer() : m_autonomousCommand(&Drive), JoystickDrive(JoystickDriveID), JoystickOperate(JoystickOperateID) {
   // Initialize all of your commands and subsystems here
     frc::SmartDashboard::SetDefaultNumber("Shooter speed", 3500);// for use on shoot button
-
+    VisionControl::DriverCam();
     Wheel.SetDefaultCommand(frc2::RunCommand( //This all is temporary for testing
       [this]{frc::SmartDashboard::PutString("ColorFound", ColorNames[Wheel.FindColor()]);
             CheckScoreColor();
@@ -60,46 +60,48 @@ RobotContainer::RobotContainer() : m_autonomousCommand(&Drive), JoystickDrive(Jo
 
 void RobotContainer::ConfigureButtonBindings() {
   // Configure your button bindings here
-   // run shooter
+
+      //Operate Controller
+    //When Shooter starts, begin Shooter, Gate, and Hopperbelt 
   frc2::JoystickButton(&JoystickOperate, 1).WhenPressed([this]{
     double spd = frc::SmartDashboard::GetNumber("Shooter speed", 3500);
     Gun.ShooterRPM(spd);
     Gun.TransferForwards();
     Gun.OpenGate();
     });
-  
+    //When Shooter ends, stop Shooter, Gate, and Hopperbelt
   frc2::JoystickButton(&JoystickOperate, 4).WhenPressed([this]{
     Gun.StopShooter();
     Gun.CloseGate();
     Gun.TransferOff();//ask if needs to be reversed
     });
-    // gate control
+    //Control when Gate is Open or Closed
   frc2::JoystickButton(&JoystickOperate, 3).WhileHeld([this]{
     double GateOpen = JoystickOperate.GetY();
     if(GateOpen <= -0.1) Gun.OpenGate();
     else Gun.CloseGate();});
-    //intake up
+    //Raise the Intake and Climber
   frc2::JoystickButton(&JoystickOperate, 5).WhenPressed([this]{
     Hopperclimber(BothUp);});
-    // intake down
+    //Lower the Intake, Raise the Climber up
   frc2::JoystickButton(&JoystickOperate, 6).WhenPressed([this]{//Check to make sure and see if they need both down
     Hopperclimber(HDownCUp);});
-    // mast down
+    // mast down (climber)
   frc2::JoystickButton(&JoystickOperate, 2).WhenPressed([this]{
-    Hopperclimber(BothDown);}); //change this button later on
+    Hopperclimber(BothDown);});
     //switch limelight into a normal camera
   frc2::JoystickButton(&JoystickOperate, 7).WhenPressed([]{
     VisionControl::DriverCam();});
     //switch limelight to normal limelight settings
   frc2::JoystickButton(&JoystickOperate, 8).WhenPressed([]{
     VisionControl::TargetFind();});
-    // intake
+    // Pickup Control / (Intake Control)
   frc2::JoystickButton(&JoystickOperate, 9).WhileHeld([this]{
     double Pickup = JoystickOperate.GetY();
     if(Pickup <= -0.1) Gun.PickUpForwards();
     else if(Pickup >= 0.1) Gun.PickUpBackwards();
     else Gun.PickUpOff();});
-    // hopper belt
+    // Transfer Control / (Hopperbelt Control)
   frc2::JoystickButton(&JoystickOperate, 10).WhileHeld([this]{
     double Transfer = JoystickOperate.GetRawAxis(3);
     if(Transfer <= -0.1) Gun.TransferForwards();
@@ -130,17 +132,21 @@ void RobotContainer::ConfigureButtonBindings() {
     .WhenPressed([this]{Climb.carry();})
     .WhenReleased([this]{Climb.still();});
     
+      //Drive Controller
     // WOF on
   frc2::JoystickButton(&JoystickDrive, 2).WhenPressed([this]{
     Wheel.CoSensor(true);}).WhenReleased([this]{Wheel.CoSensor(false);});
+
     // WOF go for count
   frc2::JoystickButton(&JoystickDrive, 1).WhenPressed([this]{
     RotateForCount();});
     // WOF go for color
   frc2::JoystickButton(&JoystickDrive, 4).WhenPressed([this]{
     frc::SmartDashboard::PutString("Rotator", RotateForColor() ? "Working" : "Failed");});
+    //Field Orientation : Enabled
   frc2::JoystickButton(&JoystickDrive, 5).WhenPressed([this]{
     Drive.Enable();});
+    //Field Orientation : Disabled
   frc2::JoystickButton(&JoystickDrive, 6).WhenPressed([this]{
     Drive.Disable();});
   //test code
@@ -162,12 +168,12 @@ auto DeadReckon(drivetrain & drv, double spd, units::foot_t rtwd, units::foot_t 
 }
 frc2::Command* RobotContainer::GetAutonomousCommand() {
   static frc2::Command* it = new frc2::SequentialCommandGroup (
-    frc2::RunCommand([this] {
+  /*  frc2::RunCommand([this] {
       Drive.Move(0,.5);
     }, &Drive).WithTimeout(5_ft/4.8_fps),
     frc2::RunCommand([this]{
       Drive.Move(.5,0);
-    }, &Drive).WithTimeout(2_ft/4.8_fps),
+    }, &Drive).WithTimeout(2_ft/4.8_fps), */
     DeadReckon(Drive, .5, 3_ft, 4_ft)
   );
   return it;
