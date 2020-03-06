@@ -49,6 +49,7 @@ RobotContainer::RobotContainer() : m_autonomousCommand(&Drive), JoystickDrive(Jo
     frc::SmartDashboard::PutData("Move right to find target", new auto (TranslateAim(Drive, .5)));
     frc::SmartDashboard::PutData("Move left to find target", new auto (TranslateAim(Drive, -.5)));
     frc::SmartDashboard::PutData("Turn right to find target", new auto (RotateAim(Drive, .5)));
+    frc::SmartDashboard::PutData("Cancel drive command", new frc2::InstantCommand([]{}, &Drive));
 
     Wheel.SetDefaultCommand(frc2::RunCommand( //This all is temporary for testing
       [this]{frc::SmartDashboard::PutString("ColorFound", ColorNames[Wheel.FindColor()]);
@@ -215,7 +216,7 @@ auto DeadReckon(drivetrain & drv, double spd, units::foot_t rtwd, units::foot_t 
   auto dist = units::math::hypot(rtwd, fwd);
   return frc2::RunCommand([=,&drv] {
       drv.Move(rtwd/dist*spd, fwd/dist*spd);
-    }, &drv).WithTimeout(dist/spd/9.6_fps);
+    }, &drv).WithTimeout(dist/spd/10_fps + .2_s);
 }
 frc2::Command* RobotContainer::GetAutonomousCommand() {
   static frc2::Command* it = new frc2::SequentialCommandGroup (
