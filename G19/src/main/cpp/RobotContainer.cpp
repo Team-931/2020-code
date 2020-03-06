@@ -42,6 +42,13 @@ auto RotateAim(drivetrain & drv, double spd) {
 
 }
 
+auto DeadReckon(drivetrain & drv, double spd, units::foot_t rtwd, units::foot_t fwd){
+  auto dist = units::math::hypot(rtwd, fwd);
+  return frc2::RunCommand([=,&drv] {
+      drv.Move(rtwd/dist*spd, fwd/dist*spd);
+    }, &drv).WithTimeout(dist/spd/10_fps + .2_s);
+}
+
 RobotContainer::RobotContainer() : m_autonomousCommand(&Drive), JoystickDrive(JoystickDriveID), JoystickOperate(JoystickOperateID) {
   // Initialize all of your commands and subsystems here
     frc::SmartDashboard::SetDefaultNumber("Shooter speed", 3500);// for use on shoot button
@@ -50,10 +57,19 @@ RobotContainer::RobotContainer() : m_autonomousCommand(&Drive), JoystickDrive(Jo
     frc::SmartDashboard::PutData("Move left to find target", new auto (TranslateAim(Drive, -.5)));
     frc::SmartDashboard::PutData("Turn right to find target", new auto (RotateAim(Drive, .5)));
     frc::SmartDashboard::PutData("Cancel drive command", new frc2::InstantCommand([]{}, &Drive));
+    frc::SmartDashboard::SetDefaultNumber("auto speed", .5);
+    frc::SmartDashboard::SetDefaultNumber("auto feet forward", 5);
+    frc::SmartDashboard::SetDefaultNumber("auto feet rtward", 0);
+    frc::SmartDashboard::PutData("auto test move", new frc2::InstantCommand([this] {
+    DeadReckon(Drive,
+               frc::SmartDashboard::GetNumber("auto speed", .5),
+               frc::SmartDashboard::GetNumber("auto feet rtward", 0) * 1_ft,
+               frc::SmartDashboard::GetNumber("auto feet forward", 5) * 1_ft).Schedule();}));
 
     Wheel.SetDefaultCommand(frc2::RunCommand( //This all is temporary for testing
-      [this]{frc::SmartDashboard::PutString("ColorFound", ColorNames[Wheel.FindColor()]);
-            CheckScoreColor();
+      [this]{
+    frc::SmartDashboard::PutString("ColorFound", ColorNames[Wheel.FindColor()]);
+    CheckScoreColor();
 /*       if(JoystickDrive.GetRawButtonPressed(2))
       Wheel.CoSensor(true);
       else 
@@ -212,12 +228,7 @@ void RobotContainer::ConfigureButtonBindings() {
   frc2::JoystickButton(&JoystickDrive, 8).WhenPressed([this]{
     Drive.GetNavX().ZeroYaw();});
 }
-auto DeadReckon(drivetrain & drv, double spd, units::foot_t rtwd, units::foot_t fwd){
-  auto dist = units::math::hypot(rtwd, fwd);
-  return frc2::RunCommand([=,&drv] {
-      drv.Move(rtwd/dist*spd, fwd/dist*spd);
-    }, &drv).WithTimeout(dist/spd/10_fps + .2_s);
-}
+// Make auto:
 frc2::Command* RobotContainer::GetAutonomousCommand() {
   static frc2::Command* it = new frc2::SequentialCommandGroup (
   /*  frc2::RunCommand([this] {
