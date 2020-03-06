@@ -12,6 +12,7 @@
 # include <frc/DriverStation.h>
 # include <frc/smartdashboard/SmartDashboard.h>
 #include <frc2/command/RunCommand.h>
+# include <frc2/command/InstantCommand.h>
 # include <frc2/command/ParallelRaceGroup.h>
 # include <frc2/command/SequentialCommandGroup.h>
 
@@ -44,7 +45,11 @@ auto RotateAim(drivetrain & drv, double spd) {
 RobotContainer::RobotContainer() : m_autonomousCommand(&Drive), JoystickDrive(JoystickDriveID), JoystickOperate(JoystickOperateID) {
   // Initialize all of your commands and subsystems here
     frc::SmartDashboard::SetDefaultNumber("Shooter speed", 3500);// for use on shoot button
-    VisionControl::DriverCam();
+    frc2::InstantCommand([]{VisionControl::DriverCam();}).Schedule();
+    frc::SmartDashboard::PutData("Move right to find target", new auto (TranslateAim(Drive, .5)));
+    frc::SmartDashboard::PutData("Move left to find target", new auto (TranslateAim(Drive, -.5)));
+    frc::SmartDashboard::PutData("Turn right to find target", new auto (RotateAim(Drive, .5)));
+
     Wheel.SetDefaultCommand(frc2::RunCommand( //This all is temporary for testing
       [this]{frc::SmartDashboard::PutString("ColorFound", ColorNames[Wheel.FindColor()]);
             CheckScoreColor();
