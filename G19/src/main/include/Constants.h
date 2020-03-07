@@ -12,6 +12,7 @@ namespace constants {
     namespace Cowl {
     constexpr int LiftID=11;
     constexpr int CounterID=0;
+    constexpr int SlowCowlID=0;
     //Place Holders for the CounterID
     constexpr int CountMin=0;
     constexpr int CountMax=100;

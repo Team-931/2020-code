@@ -4,6 +4,7 @@
 #include <CTRE/phoenix.h>
 #include "Constants.h"
 #include <frc/Counter.h>
+#include <frc/AnalogPotentiometer.h>
 
 class Cowl : public frc2::SubsystemBase {
       // Components (e.g. motor controllers and sensors) should generally be
@@ -13,6 +14,7 @@ class Cowl : public frc2::SubsystemBase {
   WPI_TalonSRX CowlLift;
     //  Counts the ticks while moving the Cowl
   frc::Counter CowlCounter;
+  frc::AnalogPotentiometer SlowCowl;
     int CurrentPosition, MotorVelocity, DesiredTicks;
  public:
   Cowl();
@@ -32,5 +34,5 @@ class Cowl : public frc2::SubsystemBase {
   void Periodic() override;
 
   int GetCount() {return CurrentPosition/*CowlCounter.Get()*/;}
-
+  double Potentiometer() {return SlowCowl.Get();}
 };

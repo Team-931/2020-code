@@ -4,7 +4,7 @@
 using namespace constants::Cowl;
 
 Cowl::Cowl():CowlLift(LiftID), 
-CowlCounter(CounterID)
+CowlCounter(CounterID), SlowCowl(SlowCowlID)
 {
     CurrentPosition = CountMin;
     MotorVelocity = 0;

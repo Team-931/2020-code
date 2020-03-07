@@ -6,12 +6,12 @@
 /*----------------------------------------------------------------------------*/
 
 #include "RobotContainer.h"
-#include "VisionControl.h"
+# include "VisionControl.h"
 # include <frc2/command/button/JoystickButton.h>
 # include <frc2/command/button/POVButton.h>
 # include <frc/DriverStation.h>
 # include <frc/smartdashboard/SmartDashboard.h>
-#include <frc2/command/RunCommand.h>
+# include <frc2/command/RunCommand.h>
 # include <frc2/command/InstantCommand.h>
 # include <frc2/command/ParallelRaceGroup.h>
 # include <frc2/command/SequentialCommandGroup.h>
@@ -97,6 +97,10 @@ RobotContainer::RobotContainer() : m_autonomousCommand(&Drive), JoystickDrive(Jo
         }
       else Drive.Move(readz, ready, readx);
       }, &Drive));
+    
+    GunRoof.SetDefaultCommand(frc2::RunCommand([this]{
+      frc::SmartDashboard::PutNumber("Analog Potentiometer", GunRoof.Potentiometer());
+    }), &GunRoof);
       // Configure the button bindings
   ConfigureButtonBindings();
 }
