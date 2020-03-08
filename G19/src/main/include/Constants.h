@@ -17,7 +17,7 @@ namespace constants {
     // 0 is elevation for when touching target, scale (10) for end of trench, AtLine for on Initiatation line
     constexpr double rawMin = .335, rawAtLine = .476, rawMax = .489, scale = 10,
                      SlRange = scale / (rawMax - rawMin), SlOffset = -SlRange * rawMin, 
-                     AtLine = scale * rawAtLine + SlOffset;
+                     AtLine = SlRange * rawAtLine + SlOffset;
     //Place Holders for the CounterID
     constexpr int CountMin=0;
     constexpr int CountMax=100;
@@ -56,7 +56,7 @@ namespace constants {
     constexpr int SolenoidBackward=1;
             // These are for the PID Control of the shooter motor speed
     constexpr double kP=0.0006, kI=.0000001, kD=0, kIz=0,
-     kFF=0.000045, kMaxOutput=1, kMinOutput=-1;}//kFF started at .000015
+     kFF=0.00015, kMaxOutput=1, kMinOutput=-1;}//kFF started at .000015
     namespace WOFSpinner {
         constexpr int Spinner{10};
         constexpr int WheelRotation{40960};

@@ -15,11 +15,17 @@
 # include <frc2/command/InstantCommand.h>
 # include <frc2/command/ParallelRaceGroup.h>
 # include <frc2/command/SequentialCommandGroup.h>
+# include <frc2/command/WaitCommand.h>
 
 using namespace constants::RobotContainer;
 const int BothUp{1};
 const int BothDown{0};
 const int HDownCUp{2};
+
+struct DisabledCommand : frc2::CommandHelper<frc2::InstantCommand, DisabledCommand> {
+  using frc2::CommandHelper<frc2::InstantCommand, DisabledCommand>::CommandHelper;
+  bool RunsWhenDisabled() const override{return true;}
+};
 
 auto TranslateAim(drivetrain & drv, double spd){
   return frc2::RunCommand([&drv, spd]{
@@ -27,11 +33,13 @@ auto TranslateAim(drivetrain & drv, double spd){
     if(target.found) drv.Move(target.horiz/14*abs(spd), 0);
     else drv.Move(spd, 0);
     }, &drv) 
-  //. WithInterrupt([]{return VisionControl::GetTarget().found;}) 
+  . WithInterrupt([]{
+      auto tgt = VisionControl::GetTarget();
+      return tgt.found && abs(tgt.horiz) <= 4;}) 
   . WithTimeout(10_s);
 }
 auto RotateAim(drivetrain & drv, double spd) {
-  spd*=constants::drivetrain::Maxspeed;
+  spd*=constants::drivetrain::Maxspeed/4;
   return frc2::RunCommand([&drv, spd]{
     auto target = VisionControl::GetTarget();
     if(target.found) drv.SetAngleToField(drv.GetController().GetSetpoint()+abs(spd)*target.horiz/14);
@@ -48,23 +56,35 @@ auto DeadReckon(drivetrain & drv, double spd, units::foot_t rtwd, units::foot_t 
       drv.Move(rtwd/dist*spd, fwd/dist*spd);
     }, &drv).WithTimeout(dist/spd/10_fps + .2_s);
 }
+auto DeadReckon(drivetrain &drv) {
+  auto spd = frc::SmartDashboard::GetNumber("auto speed", .5);
+  auto rtwd = frc::SmartDashboard::GetNumber("auto feet rtward", 0) * 1_ft,
+       fwd = frc::SmartDashboard::GetNumber("auto feet forward", 5) * 1_ft,
+       dist = units::math::hypot(rtwd, fwd);
+  return frc2::RunCommand([=, &drv] {
+           drv.Move(rtwd / dist * spd, fwd / dist * spd);
+         },  &drv)
+      .WithTimeout(dist / spd / 10_fps + .2_s);
+}
 
 RobotContainer::RobotContainer() : m_autonomousCommand(&Drive), JoystickDrive(JoystickDriveID), JoystickOperate(JoystickOperateID) {
   // Initialize all of your commands and subsystems here
     frc::SmartDashboard::SetDefaultNumber("Shooter speed", 3500);// for use on shoot button
-    frc2::InstantCommand([]{VisionControl::DriverCam();}).Schedule();
+    (new DisabledCommand([]{VisionControl::DriverCam();}))->Schedule();
+    //Set commands on Dashbrd: target finding
     frc::SmartDashboard::PutData("Move right to find target", new auto (TranslateAim(Drive, .5)));
     frc::SmartDashboard::PutData("Move left to find target", new auto (TranslateAim(Drive, -.5)));
     frc::SmartDashboard::PutData("Turn right to find target", new auto (RotateAim(Drive, .5)));
     frc::SmartDashboard::PutData("Cancel drive command", new frc2::InstantCommand([]{}, &Drive));
+    // Deadreckoning on Dasboard
     frc::SmartDashboard::SetDefaultNumber("auto speed", .5);
     frc::SmartDashboard::SetDefaultNumber("auto feet forward", 5);
     frc::SmartDashboard::SetDefaultNumber("auto feet rtward", 0);
-    frc::SmartDashboard::PutData("auto test move", new frc2::InstantCommand([this] {
-    DeadReckon(Drive,
-               frc::SmartDashboard::GetNumber("auto speed", .5),
-               frc::SmartDashboard::GetNumber("auto feet rtward", 0) * 1_ft,
-               frc::SmartDashboard::GetNumber("auto feet forward", 5) * 1_ft).Schedule();}));
+    frc::SmartDashboard::PutData("auto test move", new auto (DeadReckon(Drive)));
+    // Cowl setting
+    frc::SmartDashboard::PutData("Set Cowl for Close in", new frc2::InstantCommand([this] {GunRoof.LiftCowl(0);}));
+    frc::SmartDashboard::PutData("Set Cowl for the Line", new frc2::InstantCommand([this] {GunRoof.LiftCowl(constants::Cowl::AtLine);}));
+    frc::SmartDashboard::PutData("Set Cowl for Trench run", new frc2::InstantCommand([this] {GunRoof.LiftCowl(constants::Cowl::scale);}));
 
     Wheel.SetDefaultCommand(frc2::RunCommand( //This all is temporary for testing
       [this]{
@@ -167,7 +187,7 @@ void RobotContainer::ConfigureButtonBindings() {
     // Cowl raising
   frc2::JoystickButton(&JoystickOperate, 11).WhenReleased(
       [this]{frc::SmartDashboard::PutNumber("Cowl Counter", GunRoof.GetCount());
-      int what = -10 * JoystickOperate.GetY();
+      double what = -JoystickOperate.GetY();
       //frc::SmartDashboard::PutNumber("Cowl Goal", where);
       GunRoof.LiftCowlBy(what);}
     );
@@ -240,13 +260,19 @@ void RobotContainer::ConfigureButtonBindings() {
 // Make auto:
 frc2::Command* RobotContainer::GetAutonomousCommand() {
   static frc2::Command* it = new frc2::SequentialCommandGroup (
-  /*  frc2::RunCommand([this] {
-      Drive.Move(0,.5);
-    }, &Drive).WithTimeout(5_ft/4.8_fps),
-    frc2::RunCommand([this]{
-      Drive.Move(.5,0);
-    }, &Drive).WithTimeout(2_ft/4.8_fps), */
-    DeadReckon(Drive, .5, 3_ft, 4_ft)
+    frc2::InstantCommand([this]{Gun.ShooterRPM(3500);
+    Hopperclimber(HDownCUp);
+    GunRoof.LiftCowl(9);
+    VisionControl::TargetFind();}),
+    frc2::WaitCommand(1_s),
+    TranslateAim(Drive, .5),
+    frc2::InstantCommand ([this]{Gun.OpenGate();
+    Gun.TransferForwards();}),
+    frc2::WaitCommand(5_s),
+    frc2::InstantCommand ([this]{Gun.CloseGate();
+    Gun.TransferOff(); Gun.StopShooter();
+    VisionControl::DriverCam();}),
+    DeadReckon(Drive, .5, 0_ft, 5_ft)
   );
   return it;
 

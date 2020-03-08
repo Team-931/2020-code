@@ -13,8 +13,9 @@ CowlCounter(CounterID), SlowCowl(SlowCowlID, SlRange, SlOffset)
 
     //NOTE: Find out the ticks for the Cowl from Minimum to Maximum
 
-void Cowl::LiftCowl(int DesiredLocation) {
-    CurrentPosition+=CowlCounter.Get()*MotorVelocity;
+void Cowl::LiftCowl(double DesiredLocation) {
+    Target = DesiredLocation;
+/*     CurrentPosition+=CowlCounter.Get()*MotorVelocity;
     CowlCounter.Reset();
     if(DesiredLocation > CountMax) DesiredLocation = CountMax;
     if(DesiredLocation < CountMin) DesiredLocation = CountMin;
@@ -22,18 +23,20 @@ void Cowl::LiftCowl(int DesiredLocation) {
     if(DesiredTicks > 0){MotorVelocity = 1;}
     else if(DesiredTicks == 0){MotorVelocity = 0;}
     else{MotorVelocity = -1; DesiredTicks = -DesiredTicks;}
-}
+ */}
 
-void Cowl::LiftCowlBy(int Change) {
-    CurrentPosition+=CowlCounter.Get()*MotorVelocity;
+void Cowl::LiftCowlBy(double Change) {
+    Target += Change;
+/*     CurrentPosition+=CowlCounter.Get()*MotorVelocity;
     CowlCounter.Reset();
     DesiredTicks=Change;
     if(DesiredTicks > 0){MotorVelocity = 1;}
     else if(DesiredTicks == 0){MotorVelocity = 0;}
     else{MotorVelocity = -1; DesiredTicks = -DesiredTicks;}
-}
+ */}
 
 void Cowl::Periodic() {
-    if(DesiredTicks > CowlCounter.Get()) CowlLift.Set(MotorVelocity*.5);
+    CowlLift.Set(.5*(Target - Potentiometer()));
+/*     if(DesiredTicks > CowlCounter.Get()) CowlLift.Set(MotorVelocity*.5);
     else CowlLift.StopMotor();
-}
+ */}

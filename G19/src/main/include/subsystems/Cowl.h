@@ -15,6 +15,7 @@ class Cowl : public frc2::SubsystemBase {
     //  Counts the ticks while moving the Cowl
   frc::Counter CowlCounter;
   frc::AnalogPotentiometer SlowCowl;
+  double Target = 0;
     int CurrentPosition, MotorVelocity, DesiredTicks;
  public:
   Cowl();
@@ -23,11 +24,11 @@ class Cowl : public frc2::SubsystemBase {
    * if it can, go to the desired level
    * it it can't, close to the desired level
   */
-  void LiftCowl(int DesiredLocation);
+  void LiftCowl(double DesiredLocation);
   /** increment Cowl level
    * @param Change
   */
- void LiftCowlBy(int Change);
+ void LiftCowlBy(double Change);
   /**
    * Will be called periodically whenever the CommandScheduler runs.
    */
