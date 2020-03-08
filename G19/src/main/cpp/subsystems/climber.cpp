@@ -4,9 +4,9 @@
 using namespace constants::climber;
 
                                         // Changed Motor type from Brushless to Brushed
-climber::climber():/* ClimbMover(climbmoverid), */ ClimbMotor(motorid, rev::CANSparkMax::MotorType::kBrushed),
+climber::climber():/* ClimbMover(climbmoverid), */ ClimbMotor(motorid/* , rev::CANSparkMax::MotorType::kBrushed */),
 Reach(ReachUp, ReachDown){
-    ClimbMotor.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);}
+    ClimbMotor.SetNeutralMode(Brake) /* SetIdleMode(rev::CANSparkMax::IdleMode::kBrake) */;}
 
 void climber::Periodic(){}
 

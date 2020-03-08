@@ -37,9 +37,9 @@ class climber : public frc2::SubsystemBase {
 
  private:
 
-  // WPI_TalonSRX ClimbMover;
-  rev::CANSparkMax ClimbMotor;
-  rev::CANEncoder ClimbEncoder {ClimbMotor};
+  WPI_TalonSRX ClimbMotor/*, ClimbMover*/;
+  //rev::CANSparkMax ClimbMotor;
+  //rev::CANEncoder ClimbEncoder {ClimbMotor};
     //Reaches for the bar on the Closet Hanger
   frc::DoubleSolenoid Reach;
   // Components (e.g. motor controllers and sensors) should generally be

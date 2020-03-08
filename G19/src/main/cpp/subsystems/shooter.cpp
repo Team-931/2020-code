@@ -27,15 +27,18 @@ LeftSolenoid(SolenoidForward, SolenoidBackward)
       UniqueName.SetIZone(kIz);
       UniqueName.SetFF(kFF);
       UniqueName.SetOutputRange(kMinOutput, kMaxOutput);
-      SolenoidUp();
+      //SolenoidUp();
 }
 
 void shooter::Periodic() {
   // Implementation of subsystem periodic method goes here.
-  if(double rpm = shooterencoder.GetVelocity(); GateOpen && rpm >= minRPM &&  rpm <= maxRPM) Gate.Set(1);
+  if(double rpm = shooterencoder.GetVelocity(); GateOpen && rpm >= minRPM &&  rpm <= maxRPM) {
+    Gate.Set(1);
+    TransferSpeed = 1;
+  }
   else Gate.Set(-1);
 
-  intake.Set(PickupSpeed);
+  if(safeToUseIntake) intake.Set(PickupSpeed);
   hopperbelt.Set(TransferSpeed);
 }
 // Implements

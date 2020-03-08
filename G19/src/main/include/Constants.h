@@ -13,6 +13,11 @@ namespace constants {
     constexpr int LiftID=11;
     constexpr int CounterID=0;
     constexpr int SlowCowlID=0;
+    // For the string potentiometer (SlowCowl) scaling to useful values
+    // 0 is elevation for when touching target, scale (10) for end of trench, AtLine for on Initiatation line
+    constexpr double rawMin = .335, rawAtLine = .476, rawMax = .489, scale = 10,
+                     SlRange = scale / (rawMax - rawMin), SlOffset = -SlRange * rawMin, 
+                     AtLine = scale * rawAtLine + SlOffset;
     //Place Holders for the CounterID
     constexpr int CountMin=0;
     constexpr int CountMax=100;
@@ -21,7 +26,7 @@ namespace constants {
         constexpr int JoystickDriveID=0, JoystickOperateID=1;
         constexpr const char * ColorNames[] = {"None yet", "Red", "Green", "Blue", "Yellow"};
     }
-    namespace climber {constexpr int motorid=17;
+    namespace climber {constexpr int motorid=31;
     constexpr int climbmoverid=31;
     constexpr int ReachUp=7;
     constexpr int ReachDown =0;
@@ -51,9 +56,9 @@ namespace constants {
     constexpr int SolenoidBackward=1;
             // These are for the PID Control of the shooter motor speed
     constexpr double kP=0.0006, kI=.0000001, kD=0, kIz=0,
-     kFF=0.000015, kMaxOutput=1, kMinOutput=-1;}
+     kFF=0.000045, kMaxOutput=1, kMinOutput=-1;}//kFF started at .000015
     namespace WOFSpinner {
-        constexpr int Spinner{31};
+        constexpr int Spinner{10};
         constexpr int WheelRotation{40960};
             // Reports WheelOfFortune at 40960 ticks/rotation
         constexpr int WOFDiamater{2*12+8};

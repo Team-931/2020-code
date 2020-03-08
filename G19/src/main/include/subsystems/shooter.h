@@ -44,6 +44,7 @@ class shooter : public frc2::SubsystemBase {
    * Will be called periodically whenever the CommandScheduler runs.
    */
   void Periodic() override;
+  bool safeToUseIntake;
     /* Asks if gate is open or closed */
   bool GateStatus() {return GateOpen;}
       // Spins the Gate toward the Shooter, moving the Power Cells into the Shooter.

@@ -100,7 +100,7 @@ RobotContainer::RobotContainer() : m_autonomousCommand(&Drive), JoystickDrive(Jo
     
     GunRoof.SetDefaultCommand(frc2::RunCommand([this]{
       frc::SmartDashboard::PutNumber("Analog Potentiometer", GunRoof.Potentiometer());
-    }), &GunRoof);
+    }, &GunRoof));
       // Configure the button bindings
   ConfigureButtonBindings();
 }
@@ -199,11 +199,16 @@ void RobotContainer::ConfigureButtonBindings() {
     .WhenReleased([this]{Climb.still();});
     
       //Drive Controller
-    // WOF on
-  frc2::JoystickButton(&JoystickDrive, 2).WhenPressed([this]{
-    Wheel.CoSensor(true);}).WhenReleased([this]{Wheel.CoSensor(false);});
+  // WOF on
+  frc2::JoystickButton(&JoystickDrive, 2)
+      .WhenPressed([this] {
+    Wheel.CoSensor(true);
+    Gun.safeToUseIntake = false; })
+      .WhenReleased([this] {
+      Wheel.CoSensor(false);
+      Gun.safeToUseIntake = true; });
 
-    // WOF go for count
+  // WOF go for count
   frc2::JoystickButton(&JoystickDrive, 1).WhenPressed([this]{
     RotateForCount();});
 
