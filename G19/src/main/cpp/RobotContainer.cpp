@@ -16,6 +16,7 @@
 # include <frc2/command/ParallelRaceGroup.h>
 # include <frc2/command/SequentialCommandGroup.h>
 # include <frc2/command/WaitCommand.h>
+# include <frc2/command/SelectCommand.h>
 
 using namespace constants::RobotContainer;
 const int BothUp{1};
@@ -29,6 +30,7 @@ struct DisabledCommand : frc2::CommandHelper<frc2::InstantCommand, DisabledComma
 
 auto TranslateAim(drivetrain & drv, double spd){
   return frc2::RunCommand([&drv, spd]{
+    VisionControl::TargetFind();
     auto target = VisionControl::GetTarget();
     if(target.found) drv.Move(target.horiz/14*abs(spd), 0);
     else drv.Move(spd, 0);
@@ -41,6 +43,7 @@ auto TranslateAim(drivetrain & drv, double spd){
 auto RotateAim(drivetrain & drv, double spd) {
   spd*=constants::drivetrain::Maxspeed/4;
   return frc2::RunCommand([&drv, spd]{
+    VisionControl::TargetFind();
     auto target = VisionControl::GetTarget();
     if(target.found) drv.SetAngleToField(drv.GetController().GetSetpoint()+abs(spd)*target.horiz/14);
     else drv.SetAngleToField(drv.GetController().GetSetpoint()+spd);
@@ -72,8 +75,11 @@ RobotContainer::RobotContainer() : m_autonomousCommand(&Drive), JoystickDrive(Jo
     frc::SmartDashboard::SetDefaultNumber("Shooter speed", 3500);// for use on shoot button
     (new DisabledCommand([]{VisionControl::DriverCam();}))->Schedule();
     //Set commands on Dashbrd: target finding
-    frc::SmartDashboard::PutData("Move right to find target", new auto (TranslateAim(Drive, .5)));
-    frc::SmartDashboard::PutData("Move left to find target", new auto (TranslateAim(Drive, -.5)));
+    frc::SmartDashboard::SetDefaultBoolean("target is on left", false);
+    frc::SmartDashboard::PutData("Move to find target", 
+          new frc2::SelectCommand<bool> ([]{return frc::SmartDashboard::GetBoolean("target is on left", false);},
+           std::pair(true, TranslateAim(Drive, -.5)), std::pair(false, TranslateAim(Drive, .5))));
+    //frc::SmartDashboard::PutData("Move left to find target", new auto (TranslateAim(Drive, -.5)));
     frc::SmartDashboard::PutData("Turn right to find target", new auto (RotateAim(Drive, .5)));
     frc::SmartDashboard::PutData("Cancel drive command", new frc2::InstantCommand([]{}, &Drive));
     // Deadreckoning on Dasboard
@@ -263,7 +269,7 @@ frc2::Command* RobotContainer::GetAutonomousCommand() {
     frc2::InstantCommand([this]{Gun.ShooterRPM(3500);
     Hopperclimber(HDownCUp);
     GunRoof.LiftCowl(9);
-    VisionControl::TargetFind();}),
+    VisionControl::DriverCam();}),
     frc2::WaitCommand(1_s),
     TranslateAim(Drive, .5),
     frc2::InstantCommand ([this]{Gun.OpenGate();

@@ -39,7 +39,12 @@ void shooter::Periodic() {
   else Gate.Set(-1);
 
   if(safeToUseIntake) intake.Set(PickupSpeed);
-  hopperbelt.Set(TransferSpeed);
+  static short irregularity = 0;
+  if(++irregularity == 20) {
+    irregularity = 0;
+    hopperbelt.StopMotor();
+  }
+  else hopperbelt.Set(TransferSpeed);
 }
 // Implements
   void shooter::ShooterRPM(double RPM) {
