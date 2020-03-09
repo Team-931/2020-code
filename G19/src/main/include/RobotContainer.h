@@ -8,6 +8,7 @@
 #pragma once
 
 #include <frc2/command/Command.h>
+# include <frc/smartdashboard/SendableChooser.h>
 
 #include "commands/ExampleCommand.h"
 #include "subsystems/drivetrain.h"
@@ -31,6 +32,7 @@ class RobotContainer {
   frc2::Command* GetAutonomousCommand();
 
  private:
+ frc::SendableChooser<char> AutonomousDashboard;
   // The robot's subsystems and commands are defined here...
   drivetrain Drive;
   climber Climb;

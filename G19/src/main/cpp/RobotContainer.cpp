@@ -72,13 +72,18 @@ auto DeadReckon(drivetrain &drv) {
 
 RobotContainer::RobotContainer() : m_autonomousCommand(&Drive), JoystickDrive(JoystickDriveID), JoystickOperate(JoystickOperateID) {
   // Initialize all of your commands and subsystems here
+  //Auto choices
+    AutonomousDashboard.SetDefaultOption("Shoot from line, then move", 'A');
+    AutonomousDashboard.AddOption("Move 9 ft, then shoot", 'B');
+    frc::SmartDashboard::PutData(&AutonomousDashboard);
     frc::SmartDashboard::SetDefaultNumber("Shooter speed", 3500);// for use on shoot button
+    // This doesn't work.
     (new DisabledCommand([]{VisionControl::DriverCam();}))->Schedule();
     //Set commands on Dashbrd: target finding
     frc::SmartDashboard::SetDefaultBoolean("target is on left", false);
     frc::SmartDashboard::PutData("Move to find target", 
           new frc2::SelectCommand<bool> ([]{return frc::SmartDashboard::GetBoolean("target is on left", false);},
-           std::pair(true, TranslateAim(Drive, -.5)), std::pair(false, TranslateAim(Drive, .5))));
+           std::pair{true, TranslateAim(Drive, -.5)}, std::pair{false, TranslateAim(Drive, .5)}));
     //frc::SmartDashboard::PutData("Move left to find target", new auto (TranslateAim(Drive, -.5)));
     frc::SmartDashboard::PutData("Turn right to find target", new auto (RotateAim(Drive, .5)));
     frc::SmartDashboard::PutData("Cancel drive command", new frc2::InstantCommand([]{}, &Drive));
@@ -251,35 +256,62 @@ void RobotContainer::ConfigureButtonBindings() {
     Drive.Disable();});
 
   //test code
-    using constants::Cowl::CountMax, constants::Cowl::CountMin;
+/*     using constants::Cowl::CountMax, constants::Cowl::CountMin;
   frc2::JoystickButton(&JoystickDrive, 9).WhenReleased(
       [this]{frc::SmartDashboard::PutNumber("Cowl Counter", GunRoof.GetCount());
       int where = (CountMin + CountMax - (CountMax - CountMin) * JoystickDrive.GetY())/2;
       frc::SmartDashboard::PutNumber("Cowl Goal", where);
       GunRoof.LiftCowl(where);}
     );
-
+ */
   //Reset the Yaw 0
   frc2::JoystickButton(&JoystickDrive, 8).WhenPressed([this]{
     Drive.GetNavX().ZeroYaw();});
 }
 // Make auto:
-frc2::Command* RobotContainer::GetAutonomousCommand() {
-  static frc2::Command* it = new frc2::SequentialCommandGroup (
-    frc2::InstantCommand([this]{Gun.ShooterRPM(3500);
-    Hopperclimber(HDownCUp);
-    GunRoof.LiftCowl(9);
-    VisionControl::DriverCam();}),
-    frc2::WaitCommand(1_s),
-    TranslateAim(Drive, .5),
-    frc2::InstantCommand ([this]{Gun.OpenGate();
-    Gun.TransferForwards();}),
-    frc2::WaitCommand(5_s),
-    frc2::InstantCommand ([this]{Gun.CloseGate();
-    Gun.TransferOff(); Gun.StopShooter();
-    VisionControl::DriverCam();}),
-    DeadReckon(Drive, .5, 0_ft, 5_ft)
-  );
+frc2::Command *RobotContainer::GetAutonomousCommand()
+{
+  static frc2::Command *it = new frc2::SelectCommand<char>(
+      [this] { return AutonomousDashboard.GetSelected(); },
+      std::pair{'B', frc2::SequentialCommandGroup(
+          frc2::InstantCommand([this] {
+            Gun.ShooterRPM(3500);
+            Hopperclimber(HDownCUp);
+            GunRoof.LiftCowl(7);
+            VisionControl::DriverCam(); }),
+          DeadReckon(Drive, .5, 0_ft, 5_ft),
+          frc2::SelectCommand<bool>([] { return frc::SmartDashboard::GetBoolean("target is on left", false); },
+                                    std::pair{true, TranslateAim(Drive, -.5)}, std::pair{false, TranslateAim(Drive, .5)}),
+          frc2::InstantCommand([this] {
+            Gun.OpenGate();
+            Gun.TransferForwards(); }),
+          frc2::WaitCommand(5_s),
+          frc2::InstantCommand([this] {
+            Gun.CloseGate();
+            Gun.TransferOff();
+            Gun.StopShooter();
+            VisionControl::DriverCam(); })
+      )},
+      std::pair{'A', frc2::SequentialCommandGroup(
+          frc2::InstantCommand([this] {
+            Gun.ShooterRPM(3500);
+            Hopperclimber(HDownCUp);
+            GunRoof.LiftCowl(9);
+            VisionControl::DriverCam(); }),
+          frc2::WaitCommand(1_s),
+          frc2::SelectCommand<bool>([] { return frc::SmartDashboard::GetBoolean("target is on left", false); },
+                                    std::pair{true, TranslateAim(Drive, -.5)}, std::pair{false, TranslateAim(Drive, .5)}),
+
+          frc2::InstantCommand([this] {
+            Gun.OpenGate();
+            Gun.TransferForwards(); }),
+          frc2::WaitCommand(5_s),
+          frc2::InstantCommand([this] {
+            Gun.CloseGate();
+            Gun.TransferOff();
+            Gun.StopShooter();
+            VisionControl::DriverCam(); }),
+          DeadReckon(Drive, .5, 0_ft, 5_ft))});
   return it;
 
   // An example command will be run in autonomous
