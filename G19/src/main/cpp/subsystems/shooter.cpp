@@ -36,15 +36,15 @@ void shooter::Periodic() {
     Gate.Set(1);
     TransferSpeed = 1;
   }
-  else Gate.Set(-1);
+  else Gate.Set(0);// changed from -1
 
   if(safeToUseIntake) intake.Set(PickupSpeed);
+  // Causes stuttering to keep balls from treadmilling.
   static short irregularity = 0;
-  if(++irregularity == 20) {
-    irregularity = 0;
-    hopperbelt.StopMotor();
-  }
+  constexpr short irr_period = 20;
+  if(irregularity >= irr_period * 3/4) hopperbelt.StopMotor();
   else hopperbelt.Set(TransferSpeed);
+  if(++irregularity == irr_period) irregularity = 0;
 }
 // Implements
   void shooter::ShooterRPM(double RPM) {

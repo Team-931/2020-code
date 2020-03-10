@@ -6,6 +6,7 @@
 /*----------------------------------------------------------------------------*/
 
 #include "RobotContainer.h"
+# include <cameraserver/CameraServer.h>
 # include "VisionControl.h"
 # include <frc2/command/button/JoystickButton.h>
 # include <frc2/command/button/POVButton.h>
@@ -40,6 +41,7 @@ auto TranslateAim(drivetrain & drv, double spd){
       return tgt.found && abs(tgt.horiz) <= 4;}) 
   . WithTimeout(10_s);
 }
+
 auto RotateAim(drivetrain & drv, double spd) {
   spd*=constants::drivetrain::Maxspeed/4;
   return frc2::RunCommand([&drv, spd]{
@@ -72,11 +74,12 @@ auto DeadReckon(drivetrain &drv) {
 
 RobotContainer::RobotContainer() : m_autonomousCommand(&Drive), JoystickDrive(JoystickDriveID), JoystickOperate(JoystickOperateID) {
   // Initialize all of your commands and subsystems here
+  frc::CameraServer::GetInstance()->StartAutomaticCapture();
   //Auto choices
     AutonomousDashboard.SetDefaultOption("Shoot from line, then move", 'A');
-    AutonomousDashboard.AddOption("Move 9 ft, then shoot", 'B');
+    AutonomousDashboard.AddOption("Move 5 ft, then shoot", 'B');
     frc::SmartDashboard::PutData(&AutonomousDashboard);
-    frc::SmartDashboard::SetDefaultNumber("Shooter speed", 3500);// for use on shoot button
+    frc::SmartDashboard::SetDefaultNumber("Shooter speed", 4500);// for use on shoot button
     // This doesn't work.
     (new DisabledCommand([]{VisionControl::DriverCam();}))->Schedule();
     //Set commands on Dashbrd: target finding
@@ -144,7 +147,7 @@ void RobotContainer::ConfigureButtonBindings() {
   frc2::JoystickButton(&JoystickOperate, 1).WhenPressed([this]{
     double spd = frc::SmartDashboard::GetNumber("Shooter speed", 3500);
     Gun.ShooterRPM(spd);
-    Gun.TransferForwards();
+   // Gun.TransferForwards();
     Gun.OpenGate();
     });
 
@@ -183,6 +186,8 @@ void RobotContainer::ConfigureButtonBindings() {
 
     // Pickup Control / (Intake Control)
   frc2::JoystickButton(&JoystickOperate, 9).WhileHeld([this]{
+    Wheel.CoSensor(false);
+    Gun.safeToUseIntake = true;
     double Pickup = JoystickOperate.GetY();
     if(Pickup <= -0.1) Gun.PickUpForwards();
     else if(Pickup >= 0.1) Gun.PickUpBackwards();
@@ -283,11 +288,14 @@ frc2::Command *RobotContainer::GetAutonomousCommand()
           frc2::SelectCommand<bool>([] { return frc::SmartDashboard::GetBoolean("target is on left", false); },
                                     std::pair{true, TranslateAim(Drive, -.5)}, std::pair{false, TranslateAim(Drive, .5)}),
           frc2::InstantCommand([this] {
+            Drive.Move(0,0);
             Gun.OpenGate();
+            Gun.PickUpForwards();
             Gun.TransferForwards(); }),
           frc2::WaitCommand(5_s),
           frc2::InstantCommand([this] {
             Gun.CloseGate();
+            Gun.PickUpOff();
             Gun.TransferOff();
             Gun.StopShooter();
             VisionControl::DriverCam(); })
@@ -303,11 +311,15 @@ frc2::Command *RobotContainer::GetAutonomousCommand()
                                     std::pair{true, TranslateAim(Drive, -.5)}, std::pair{false, TranslateAim(Drive, .5)}),
 
           frc2::InstantCommand([this] {
+            Drive.Move(0,0);
             Gun.OpenGate();
+            Gun.PickUpForwards();
             Gun.TransferForwards(); }),
           frc2::WaitCommand(5_s),
           frc2::InstantCommand([this] {
             Gun.CloseGate();
+            Gun.PickUpOff();
+
             Gun.TransferOff();
             Gun.StopShooter();
             VisionControl::DriverCam(); }),
