@@ -48,7 +48,7 @@ void shooter::Periodic() {
 }
 // Implements
   void shooter::ShooterRPM(double RPM) {
-    minRPM = .98 * RPM;
+    minRPM = .95 * RPM;
     maxRPM = 1.02 * RPM;
     shootermotor.GetPIDController ().SetReference(RPM, rev::kVelocity);
     }
